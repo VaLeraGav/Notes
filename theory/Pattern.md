@@ -3,7 +3,7 @@
 https://www.youtube.com/watch?v=wX6BBaQZpzE
 https://github.com/ak-git1/PatternsExamples (с#)
 
-![фото](https://skazka-arkhyz.ru/wp-content/uploads/2/f/7/2f72cbfda9bcab070df3182cad1b8fb3.png)
+<img src="https://skazka-arkhyz.ru/wp-content/uploads/2/f/7/2f72cbfda9bcab070df3182cad1b8fb3.png" width="60%" height="60%" alt="диаграмма">
 
 - автоматизация куда полезнее ООП
 
