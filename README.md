@@ -6,6 +6,7 @@
 - [Git-commit](/theory/Git-commit.md) 
 - [Pattern](/theory/Pattern.md)
 - [OOP]()
+- [Markdown](/theory/Markdown.md)
 
 
 Нужно перекинуть 

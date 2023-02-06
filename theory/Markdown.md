@@ -344,6 +344,8 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 
 ## Сноски
 
+Всегда будут внизу!
+
 ```markdown
 Here is a simple footnote[^1].
 
@@ -358,6 +360,8 @@ This allows you to have a footnote with multiple lines.
 Named footnotes will still render with numbers instead of the text but allow 
 ```
 
+[⏏ К содержанию](#markdown)
+
 Результат:
 
 ---
@@ -371,10 +375,8 @@ You can also use words, to fit your writing style more closely[^note].
 [^2]: Every new line should be prefixed with 2 spaces.  
 This allows you to have a footnote with multiple lines.
 [^note]:
-Named footnotes will still render with numbers instead of the text but allow
 ---
 
-[⏏ К содержанию](#markdown)
 
 
 
