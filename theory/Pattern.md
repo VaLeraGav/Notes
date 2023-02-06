@@ -55,6 +55,6 @@ https://github.com/ak-git1/PatternsExamples (с#)
 
 Шпоргалка:
 
-![pattern1.png](assets/pattern1.png)
-![pattern2.png](assets/pattern2.png)
-![pattern3.png](assets/pattern3.png)
+![pattern1.png](../assets/pattern1.png)
+![pattern2.png](../assets/pattern2.png)
+![pattern3.png](../assets/pattern3.png)
