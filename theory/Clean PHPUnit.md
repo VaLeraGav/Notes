@@ -6,6 +6,7 @@
 
 ---
 
+1. [PHPUnit]
 1. [Вступление](#вступление)
 1. [Структура теста](#1-структура-теста)
 2. [Порядок утверждений для одного значения](#2-порядок-утверждений-для-одного-значения)
@@ -16,6 +17,205 @@
 7. [Виды тестирования и Доп информация](#виды-тестирования-и-доп-информация)
 
 ---
+
+## PHPUnit
+
+`composer require --dev phpunit/phpunit` подключение к composer
+
+`./vendor/bin/phpunit tests` запуск тестов
+
+`./vendor/bin/phpunit tests --testdox`  запустит тест и покажет блоки которые прошли тесты
+
+`./vendor/bin/phpunit --configuration phpunit.xml --coverage-html coverage` - Tests coverage, создание
+build/coverage.html
+
+`composer exec --verbose phpunit tests -- --coverage-html coverage` создаст html файл
+
+`composer exec --verbose phpunit tests -- --coverage-text` тоже самое но в текстовом режиме
+
+`composer exec`- Выполняет бинарный binary/script поставщика (Composer bin-dir)
+
+<details>
+<summary>Makefile:</summary>
+
+```php
+install:
+	composer install
+	
+lint:
+    composer run-script phpcs -- --standard=PSR12 src tests
+
+lint-fix:
+    composer run-script phpcbf -- --standard=PSR12 src tests
+
+test:
+    # ./vendor/bin/phpunit tests
+    # composer exec --verbose phpunit tests
+    # composer exec -v phpunit tests
+    composer run-script test
+    
+autoload:
+	composer dump-
+
+test-coverage-2 (laravel):
+	XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
+```
+
+</details>
+
+<details>
+<summary>Makefile для Laravel:</summary>
+
+```php
+env-prepare: # создать .env-файл для секретов
+	cp -n .env.example .env
+
+sqlite-prepare: # подготовить локальную БД
+	touch database/database.sqlite
+
+install: # установить зависимости
+	composer install
+	npm install
+
+key: # сгенерировать ключи
+	php artisan key:generate
+
+db-prepare: # загрузить данные в БД
+	php artisan migrate --seed
+
+start: # запустить приложение
+	heroku local -f Procfile.dev
+
+log:
+	tail -f storage/logs/laravel.log
+
+setup:
+	composer install
+	cp -n .env.example .env || true
+	php artisan key:gen --ansi
+	touch database/database.sqlite
+	php artisan migrate
+	php artisan db:seed
+	npm ci
+	npm run build
+
+update db:
+	rm database/database.sqlite
+	touch database/database.sqlite
+	php artisan migrate
+	php artisan db:seed
+
+test:
+	php artisan test
+```
+
+</details>
+
+<details>
+<summary>composer.json:</summary>
+
+```php
+{
+    "name": "name/name-tasks",
+    "description": "Learnin PHP ",
+    "bin": [
+        "bin/brain-games", # <-- в папке bin ( #!/usr/bin/env php )
+    ]
+    "type": "project",
+		"config": {
+		    "platform": {
+		        "php": "8.0.7"
+			   }
+		},
+    "authors": [
+        {
+            "name": "VaLeraGav",
+            "email": "email@yandex.ru"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "src/PhpArrays/00_creatingFiles.php",  # <-- namespace App\PhpArrays;
+            "src/PhpArrays/02_Arrays.php",
+        ],
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "funct/funct": "*",          // функции полезные
+        "webmozart/assert": "^1.11", // для проверки ввода и вывода методов
+        "php-ds/php-ds": "^1.3",     // структуры данных для PHP 7
+        "tightenco/collect": "^6.0", // для колекции
+        "nesbot/carbon": "^2.24",    // расширение для DateTime
+        "symfony/string": "^5.4"     // Строковый компонент, для различных языков
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.3"
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>composer.json:</summary>
+
+```html
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="/composer/vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="true">
+    <testsuites>
+        <testsuite name="tasks">
+            <directory>tests</directory>
+            // или
+            <file> tests/MoneyTest.php</file>
+            <file> тесты/CurrencyTest.php</file>
+        </testsuite>
+    </testsuites>
+
+    // laravel
+    <testsuites>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+    </coverage>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+    </php>
+
+</phpunit>
+```
+
+</details>
+
+[⏏ К содержанию](#содержание)
 
 ## Вступление
 
@@ -36,7 +236,8 @@
 - `S` - Выводится, когда тест был пропущен (см. Неполные и пропущенные тесты).
 - `I` - Выводится, когда тест отмечен как незавершённый или ещё не реализован (см. Неполные и пропущенные тесты).
 
-Пример, хорошего (возможно) теста:
+<details>
+<summary>Пример, хорошего (возможно) теста:</summary>
 
 ```php
 <?php
@@ -54,8 +255,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserRegistrator
 {
-    /** @var PasswordEncoderInterface */
-    private $passwordEncoder;
+/** @var PasswordEncoderInterface */
+private $passwordEncoder;
 
     /** @var LoggerInterface */
     private $logger;
@@ -343,6 +544,10 @@ class UserRegistratorTest extends TestCase
     }
 }
 ```
+
+</details>
+
+
 
 [⏏ К содержанию](#содержание)
 
