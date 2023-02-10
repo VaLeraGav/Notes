@@ -5,22 +5,17 @@
 - [Clean PHPUnit](/theory/Git-commit.md)
 - [Git-commit](/theory/Git-commit.md) 
 - [Pattern](/theory/Pattern.md)
-- [OOP]()
+- [OOP](/theory/OOP.md)
 - [Markdown](/theory/Markdown.md)
+- [HotkeysAndCommands](/theory/HotkeysAndCommands.md)
 
 
 Нужно перекинуть 
 
 - Git-commands
 
-https://github.com/Max-Starling/Notes/blob/master/Git.md#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BF%D0%BE%D0%BD%D1%8F%D1%82%D0%B8%D1%8F-git
-
-https://github.com/VaLeraGav/Git-commands
-
+[Прикольная теория](https://github.com/Max-Starling/Notes/blob/master/Git.md#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BF%D0%BE%D0%BD%D1%8F%D1%82%D0%B8%D1%8F-git)
 
 - PHP-function
-- Оформление md
 - Батник
-- Linux-commands
 - Docker
-- Often used commands
