@@ -1,4 +1,4 @@
-## Паттерны
+## Паттерны (пишется)
 
 https://www.youtube.com/watch?v=wX6BBaQZpzE
 https://github.com/ak-git1/PatternsExamples (с#)
