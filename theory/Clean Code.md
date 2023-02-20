@@ -1069,21 +1069,21 @@ AddressParser. Старайтесь не использовать в имена�
 
 В примере представлена всего одна операция, зависящая от типа работника.
 
-    ```php
-    public MoneycalculatePay(Employee e)
-      throws InvalidEmployeeType {
-          switch (e.type) {
-              case COMMISSIONED:
-                  return calculateCommissionedPay(e);
-              case HOURLY:
-                  return calculateHourlyPay(e);
-              case SALARIED:
-                  return calculateSalariedPay(e);
-              default:
-                  thrownew InvalidEmployeeType(e.type);
-          }
+```php
+public MoneycalculatePay(Employee e)
+  throws InvalidEmployeeType {
+      switch (e.type) {
+          case COMMISSIONED:
+              return calculateCommissionedPay(e);
+          case HOURLY:
+              return calculateHourlyPay(e);
+          case SALARIED:
+              return calculateSalariedPay(e);
+          default:
+              thrownew InvalidEmployeeType(e.type);
       }
-    ```
+  }
+```
 
 Эта функция имеет ряд недостатков.
 Во-первых, она велика, а при добавлении новых типов работников она будет
@@ -1174,10 +1174,10 @@ public classEmployeeFactoryImplimplementsEmployeeFactory {
 Если функция должна получать более двух или трех аргументов, весьма вероятно, что некоторые из этих аргументов
 стоит упаковать в отдельном классе. Рассмотрим следующие два объявления:
 
-    ```php
-    Circle makeCircle(double x,double y,double radius);
-    Circle makeCircle(Point center,double radius);
-    ```
+```php
+Circle makeCircle(double x,double y,double radius);
+Circle makeCircle(Point center,double radius);
+```
 
 Если переменные передаются совместно как единое целое (как переменные x и y в этом примере), то, скорее всего,
 вместе они образуют концепцию, заслуживающую собственного имени.
