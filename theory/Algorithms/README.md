@@ -4,30 +4,31 @@
 
 ---
 
-- Алгоритмическая сложность
-- Алгоритмы поиска
-    - Бинарный поиск
-    - Поиск в глубину
-    - Поиск в ширину
-- Алгоритмы сортировки
-    - Пузырькова
-    - Быстрая
-    - Выбором
-    - Универсальная
-    - Перемешиванием
-    - Расческой
-    - Гномья
-    - Вставками
-    - Слиянием
-    - Терпеливая
-    - Шелла
-- Cтруктуры данных
-    - Связный список
-    - Двусвязный список
-    - Очередь и стек
-    - Граф
-    - Деревья
-    - Хэш
+- [Алгоритмическая сложность]()
+- [Алгоритмы поиска]()
+    - [Линейный поиск]()
+    - [Бинарный поиск]()
+    - [Экспоненциальный поиск]()
+- [Алгоритмы сортировки]()
+    - [Пузырькова]()
+    - [Быстрая]()
+    - [Выбором]()
+    - [Универсальная]()
+    - [Перемешиванием]()
+    - [Расческой]()
+    - [Гномья]()
+    - [Вставками]()
+    - [Слиянием]()
+    - [Терпеливая]()
+    - [Шелла]()
+- [Cтруктуры данных]()
+    - [Связный список]()
+    - [Стек]()
+    - [Очередь]()
+    - [Хэш-таблица]()
+    - [Деревья]()
+    - [Куча]()
+    - [Граф]()
 
 ---
 
@@ -128,11 +129,59 @@ function memoryUsage($usage, $base_memory_usage)
 }
 ```
 
+[⏏ К содержанию](#содержание)
+
 ---
 
 ## Алгоритмы поиска
 
+https://bimlibik.github.io/posts/sorting-algorithm/
+[https://translated.turbopages.org/](https://translated.turbopages.org/proxy_u/en-ru.ru.f055177c-63f33c99-24f60e28-74722d776562/https/www.geeksforgeeks.org/searching-algorithms/#algo)
+
+## Линейный поиск - самый простой метод поиска.
+
+`Линейный поиск` - самый простой метод поиска. Элемент которые нужно
+найти, последовательно ищется в списке.
+Этот метод может выполняться для отсортированного или несортированного списка (обычно массивов).
+
+```php
+function search($arr, $x)
+{
+    $n = count($arr);
+    for($i = 0; $i < $n; $i++)
+    {
+        if($arr[$i] == $x)
+            {return $i;}
+    }
+    return -1;
+}
+
+function searchRecursive($arr, int $size, int $x)
+{
+    if ($size == 0)
+        {return -1;}
+    else {if ($arr[$size - 1] == $x)
+        {return $size - 1;}} // return index
+    return searchRecursive($arr, $size - 1, $x);
+}
+```
+
+Когда использовать линейный поиск:
+
+- Когда мы имеем дело с небольшим набором данных.
+- Когда вам нужно найти точное значение.
+- При поиске в наборе данных, хранящихся в непрерывной памяти.
+- Когда вы хотите реализовать простой алгоритм.
+
+Временная сложность линейного поиска равна O (n).
+
+[⏏ К содержанию](#содержание)
+
 ## Бинарный поиск
+
+`Бинарный поиск `- это алгоритм поиска, используемый в отсортированном массиве путем многократного деления интервала
+поиска пополам. Идея бинарного поиска состоит в том, чтобы использовать информацию о том, что массив отсортирован, и
+уменьшить временную сложность до O (Log n).
 
 Плюсы:
 
@@ -147,6 +196,9 @@ function memoryUsage($usage, $base_memory_usage)
 
 Если нужно искать в небольших массивах, можно использовать метод перебора — он будет работать со сравнимой скоростью или
 даже быстрее.
+
+<details>
+<summary>binarySearch</summary>
 
 ```php
 $stopWords = ['а', 'без', 'ближе', 'браво', 'бы', 'вам', 'вас', 'весь', 'во', 'все', 'всего', 'вы'];
@@ -196,8 +248,78 @@ $items = [-3, -1, 1, 3, 5, 7, 9, 11];
 print_r(binarySearch($items, 100, 0, count($items) )); // => -1
 print_r(binarySearch($items, -1, 0, count($items) )); // => 1
 print_r(binarySearch($items, 7, 0, count($items) )); // => 5
-
 ```
+
+</details>
+
+Когда использовать бинарный поиск:
+
+- При поиске в большом наборе данных, поскольку он имеет временную сложность O (log n), что означает, что он намного
+  быстрее, чем линейный поиск.
+- Когда набор данных отсортирован.
+- Когда данные хранятся в непрерывной памяти.
+- Данные не имеют сложной структуры или взаимосвязей.
+
+Временная сложность: O (log n)
+
+[⏏ К содержанию](#содержание)
+
+## Экспоненциальный поиск
+
+Экспоненциальный поиск включает в себя два этапа:
+
+1. Найдите диапазон, в котором присутствует элемент
+2. Выполните бинарный поиск в указанном выше диапазоне.
+
+<details>
+<summary>exponentialSearch</summary>
+
+```php
+function exponentialSearch($arr, $n, $x)
+{
+    // If x is present at first location itself
+    if ($arr[0] == $x) {
+        return 0;
+    }
+
+    // Find range for binary search by repeated doubling
+    $i = 1;
+    while ($i < $n and $arr[$i] <= $x) {
+        $i = $i * 2;
+    }
+    return binarySearch($arr, $i / 2, min($i, $n - 1), $x);
+}
+
+function binarySearch($arr, $l, $r, $x)
+{
+    if ($r >= $l) {
+        $mid = $l + ($r - $l) / 2;
+
+        if ($arr[$mid] == $x) {
+            return $mid;
+        }
+
+        if ($arr[$mid] > $x) {
+            return binarySearch($arr, $l, $mid - 1, $x);
+        }
+
+        return binarySearch($arr, $mid + 1, $r, $x);
+    }
+    return -1;
+}
+```
+
+</details>
+
+Применение экспоненциального поиска:
+
+- Экспоненциальный двоичный поиск особенно полезен для неограниченного поиска, где размер массива бесконечен.
+  Пожалуйста,
+  обратитесь к неограниченному бинарному поиску для примера.
+- Это работает лучше, чем бинарный поиск для ограниченных массивов, а также когда элемент, который нужно искать, ближе к
+  первому элементу.
+
+[⏏ К содержанию](#содержание)
 
 ---
 
@@ -212,7 +334,7 @@ print_r(binarySearch($items, 7, 0, count($items) )); // => 5
 другие методы, например, шейкерная сортировка и сортировка расчёской.
 
 <details>
-<summary>PHP</summary>
+<summary>bubbleSort</summary>
 
 ```php
 function bubbleSort1(array $data)
@@ -273,7 +395,6 @@ function bubbleSort3(array &$array) {
   return $array;
 }
 
-
 ```
 
 </details>
@@ -283,10 +404,15 @@ function bubbleSort3(array &$array) {
 | Время     | 	O(n)	   | O(n2)	  | O(n2)  |
 | Память    | 	 	      |         | 	O(1)  |
 
+[⏏ К содержанию](#содержание)
+
 ## Быстрая
 
+<details>
+<summary>quickSort</summary>
+
 ```php
-function quicksort($arr){
+function quickSort($arr){
 	$loe = $gt = array();
 	if(count($arr) < 2){
 		return $arr;
@@ -304,10 +430,15 @@ function quicksort($arr){
 }
 ```
 
+</details>
+
 ## Выбором
 
+<details>
+<summary>selectionSort</summary>
+
 ```php
-function selection_sort(&$arr) {
+function selectionSort(&$arr) {
     $n = count($arr);
     for($i = 0; $i < count($arr); $i++) {
         $min = $i;
@@ -322,7 +453,12 @@ function selection_sort(&$arr) {
 }
 ```
 
+</details>
+
 ## Универсальная
+
+<details>
+<summary>compare</summary>
 
 ```php
 $products = [
@@ -364,12 +500,17 @@ function bubbleSort(&$items, $comparator)
 bubbleSort($products, 'compareByPrice');
 ```
 
+</details>
+
 ## Перемешиванием
+
+<details>
+<summary>cocktailSort</summary>
 
 ```php
 function cocktailSort($arr){
 	if (is_string($arr)) {$arr = str_split(preg_replace('/\s+/','',$arr));}
- 
+
 	do{
 		$swapped = false;
 		for($i=0;$i<count($arr);$i++){
@@ -398,7 +539,12 @@ function cocktailSort($arr){
 }
 ```
 
+</details>
+
 ## Расческой
+
+<details>
+<summary>combSort</summary>
 
 ```php
 function combSort($arr){
@@ -406,7 +552,7 @@ function combSort($arr){
         $swap = true;
 	while ($gap > 1 || $swap){
 		if($gap > 1) {$gap /= 1.25;}
- 
+
 		$swap = false;
 		$i = 0;
 		while($i+$gap < count($arr)){
@@ -419,13 +565,16 @@ function combSort($arr){
 	}
 	return $arr;
 }
-
 ```
+
+</details>
 
 ## Гномья
 
-```php
+<details>
+<summary>gnomeSort</summary>
 
+```php
 function gnomeSort($arr){
 	$i = 1;
 	$j = 2;
@@ -444,10 +593,14 @@ function gnomeSort($arr){
 	}
 	return $arr;
 }
-
 ```
 
+</details>
+
 ## Вставками
+
+<details>
+<summary>insertionSort</summary>
 
 ```php
 function insertionSort(&$arr){
@@ -463,10 +616,15 @@ function insertionSort(&$arr){
 }
 ```
 
+</details>
+
 ## Слиянием
 
+<details>
+<summary>mergeSort</summary>
+
 ```php
-function mergesort($arr){
+function mergeSort($arr){
 	if(count($arr) == 1 ) {return $arr;}
 	$mid = count($arr) / 2;
     $left = array_slice($arr, 0, $mid);
@@ -499,17 +657,21 @@ function merge($left, $right){
 }
 ```
 
+</details>
+
 ## Терпеливая
 
-```php
+<details>
+<summary>patienceSort</summary>
 
+```php
 class PilesHeap extends SplMinHeap {
     public function compare($pile1, $pile2) {
         return parent::compare($pile1->top(), $pile2->top());
     }
 }
  
-function patience_sort(&$n) {
+function patienceSort(&$n) {
     $piles = array();
     // sort into piles
     foreach ($n as $x) {
@@ -542,7 +704,12 @@ function patience_sort(&$n) {
 }
 ```
 
+</details>
+
 ## Шелла
+
+<details>
+<summary>shellSort</summary>
 
 ```php
 function shellSort($arr)
@@ -566,6 +733,10 @@ function shellSort($arr)
 }
 ```
 
+</details>
+
+[⏏ К содержанию](#содержание)
+
 ---
 
 ## Cтруктуры данных
@@ -574,34 +745,40 @@ function shellSort($arr)
 структурой
 обычно называют набор данных, связанных определённым образом.
 
-- Связный список
-- Стек
-- Очередь
+Популярные структуры:
+
+- [Связный список]()
+- [Стек]()
+- [Очередь]()
 - Множество
 - Map
-- Хэш-таблица
-- Двоичное дерево поиска
-- Префиксное дерево
-- Двоичная куча
-- Граф
-- Полезные ссылки
+- [Хэш-таблица]()
+- [Деревья]()
+- [Куча]()
+- [Граф]()
 
-Эффективные структуры данных для PHP 7, представленные как альтернативы для типа array
+Библиотека DS имеет в себе эффективные структуры данных для PHP 7, представленные как альтернативы для типа array
 
 ```php
 git clone https://github.com/php-ds/extension "php-ds"
 ```
 
+Либо использовать Standard PHP Library (SPL), которая является частью ядра PHP.
+Подробнее [тут](https://www.php.net/manual/en/book.spl.php).
+
 ![algorithms2.png](../../assets/algorithms2.png)
+
+[⏏ К содержанию](#содержание)
 
 ## Связный список
 
-`Связанный список` – массив где каждый элемент является отдельным объектом и состоит из двух элементов – данных и ссылки
+`Связанный список` – массив, где каждый элемент является отдельным объектом и состоит из двух элементов – данных и
+ссылки
 на следующий узел.
 
 Бывают:
 
-- `Однонаправленный`, каждый узел хранит адрес или ссылку на следующий узел в списке и последний узел имеет следующий
+- `Однонаправленный`, каждый узел хранит адрес или ссылку на следующий узел в списке, и последний узел имеет следующий
   адрес или ссылку как NULL. (1->2->3->4->NULL)
 
 - `Двунаправленный`, две ссылки, связанные с каждым узлом, одним из опорных пунктов на следующий узел и один к
@@ -621,7 +798,7 @@ git clone https://github.com/php-ds/extension "php-ds"
 - isEmpty — возвращает True, если связанный список пуст
 
 <details>
-<summary>DoubleLinkedList</summary>
+<summary>класс LinkedList</summary>
 
 ```php
 class LinkedListNode
@@ -831,7 +1008,7 @@ $list = new LinkedList();
 | Длина                | O(1)   | O(n)   |
 
 <details>
-<summary>DoubleLinkedList</summary>
+<summary>класс DoubleLinkedList</summary>
 
 ```php
 class DoubleLinkedListNode
@@ -975,6 +1152,8 @@ class DoubleLinkedList
 - Сложность удаления с данным узлом равна O (1)
 - Мы можем использовать двусвязный список для выполнения куч и стеков, бинарных деревьев.
 
+[⏏ К содержанию](#содержание)
+
 ## Очередь и стек
 
 `Стек` — абстрактный тип данных, представляющий собой список элементов, организованных по принципу LIFO (англ. last in —
@@ -1057,7 +1236,8 @@ class PhpStack
 
 </details>
 
-### Реализация стека через односвязный список
+<details>
+<summary>Реализация стека через односвязный список</summary>
 
 ```php
 class Stack {
@@ -1079,6 +1259,8 @@ class Stack {
     }
 }
 ```
+
+</details>
 
 `Очередь` — хранит элемент последовательным образом. Существенное отличие от стека – использование FIFO (First in First
 Out) вместо LIFO.
@@ -1103,6 +1285,8 @@ class Queue {
 }
 ```
 
+[⏏ К содержанию](#содержание)
+
 ## Граф
 
 `Граф` — это набор узлов (вершин), которые соединены друг с другом в виде сети ребрами (дугами).
@@ -1113,9 +1297,222 @@ class Queue {
 `Неориентированные`, к каждому из ребер можно осуществлять переход в обоих направлениях.
 Смешанные
 
+<details>
+<summary>класс Graph (по возможности улучшить)</summary>
+
+```php
+class Graph
+{
+    protected $graph;
+    protected $visited = array();
+
+    public function __construct($graph) {
+        $this->graph = $graph;
+    }
+
+    // найдем минимальное число прыжков (связей) между 2 узлами
+
+    public function breadthFirstSearch($origin, $destination) {
+        // пометим все узлы как непосещенные
+        foreach ($this->graph as $vertex => $adj) {
+            $this->visited[$vertex] = false;
+        }
+
+        // пустая очередь
+        $q = new SplQueue();
+
+        // добавим начальную вершину в очередь и пометим ее как посещенную
+        $q->enqueue($origin);
+        $this->visited[$origin] = true;
+
+        // это требуется для записи обратного пути от каждого узла
+        $path = array();
+        $path[$origin] = new SplDoublyLinkedList();
+        $path[$origin]->setIteratorMode(
+            SplDoublyLinkedList::IT_MODE_FIFO|SplDoublyLinkedList::IT_MODE_KEEP
+        );
+
+        $path[$origin]->push($origin);
+
+        $found = false;
+        // пока очередь не пуста и путь не найден
+        while (!$q->isEmpty() && $q->bottom() != $destination) {
+            $t = $q->dequeue();
+
+            if (!empty($this->graph[$t])) {
+                // для каждого соседнего узла
+                foreach ($this->graph[$t] as $vertex) {
+                    if (!$this->visited[$vertex]) {
+                        // если все еще не посещен, то добавим в очередь и отметим
+                        $q->enqueue($vertex);
+                        $this->visited[$vertex] = true;
+                        // добавим узел к текущему пути
+                        $path[$vertex] = clone $path[$t];
+                        $path[$vertex]->push($vertex);
+                    }
+                }
+            }
+        }
+
+        if (isset($path[$destination])) {
+            echo "из $origin в $destination за ",
+                count($path[$destination]) - 1,
+            " прыжков";
+            $sep = '';
+            foreach ($path[$destination] as $vertex) {
+                echo $sep, $vertex;
+                $sep = '->';
+            }
+            echo "n";
+        }
+        else {
+            echo "Нет пути из $origin в $destination";
+        }
+    }
+}
+
+$graph = array(
+    'A' => array('B', 'F'),
+    'B' => array('A', 'D', 'E'),
+    'C' => array('F'),
+    'D' => array('B', 'E'),
+    'E' => array('B', 'D', 'F'),
+    'F' => array('A', 'E', 'C'),
+);
+
+$g = new Graph($graph);
+
+// минимальное число шагов из D в C
+$g->breadthFirstSearch('D', 'C');
+// вывод:
+// из D в C за 3 шага
+// D->E->F->C
+
+// минимальное число шагов из B в F
+$g->breadthFirstSearch('B', 'F');
+// вывод:
+// из B в F за 2 шага
+// B->A->F
+
+// минимальное число шагов из A в C
+$g->breadthFirstSearch('A', 'C');
+// вывод:
+// из A в C за 2 шага
+// A->F->C
+
+// минимальное число шагов из A в G
+$g->breadthFirstSearch('A', 'G');
+// вывод:
+// Пути из A в G нет
+```
+
+</details>
+
+<details>
+<summary>Поиск оптимального пути</summary>
+
+```php
+class Dijkstra
+{
+    protected $graph;
+
+    public function __construct($graph) {
+        $this->graph = $graph;
+    }
+
+    public function shortestPath($source, $target) {
+        // массив кратчайших путей к каждому узлу
+        $d = array();
+        // массив "предшественников" для каждого узла
+        $pi = array();
+        // очередь всех неоптимизированных узлов
+        $Q = new SplPriorityQueue();
+
+        foreach ($this->graph as $v => $adj) {
+            $d[$v] = INF; // устанавливаем изначальные расстояния как бесконечность
+            $pi[$v] = null; // никаких узлов позади нет
+            foreach ($adj as $w => $cost) {
+                // воспользуемся ценой связи как приоритетом
+                $Q->insert($w, $cost);
+            }
+        }
+
+        // начальная дистанция на стартовом узле - 0
+        $d[$source] = 0;
+
+        while (!$Q->isEmpty()) {
+            // извлечем минимальную цену
+            $u = $Q->extract();
+            if (!empty($this->graph[$u])) {
+                // пройдемся по всем соседним узлам
+                foreach ($this->graph[$u] as $v => $cost) {
+                    // установим новую длину пути для соседнего узла
+                    $alt = $d[$u] + $cost;
+                    // если он оказался короче
+                    if ($alt < $d[$v]) {
+                        $d[$v] = $alt; // update minimum length to vertex установим как минимальное расстояние до этого узла
+                        $pi[$v] = $u;  // добавим соседа как предшествующий этому узла
+                    }
+                }
+            }
+        }
+
+        // теперь мы можем найти минимальный путь
+        // используя обратный проход
+        $S = new SplStack(); // кратчайший путь как стек
+        $u = $target;
+        $dist = 0;
+        // проход от целевого узла до стартового
+        while (isset($pi[$u]) && $pi[$u]) {
+            $S->push($u);
+            $dist += $this->graph[$u][$pi[$u]]; // добавим дистанцию для предшествующих
+            $u = $pi[$u];
+        }
+
+        // стек будет пустой, если нет пути назад
+        if ($S->isEmpty()) {
+            echo "Нет пути из $source в $target";
+        }
+        else {
+            // добавим стартовый узел и покажем весь путь
+            // в обратном (LIFO) порядке
+            $S->push($source);
+            echo "$dist:";
+            $sep = '';
+            foreach ($S as $v) {
+                echo $sep, $v;
+                $sep = '->';
+            }
+            echo "n";
+        }
+    }
+}
+$graph = array(
+    'A' => array('B' => 3, 'D' => 3, 'F' => 6),
+    'B' => array('A' => 3, 'D' => 1, 'E' => 3),
+    'C' => array('E' => 2, 'F' => 3),
+    'D' => array('A' => 3, 'B' => 1, 'E' => 1, 'F' => 2),
+    'E' => array('B' => 3, 'C' => 2, 'D' => 1, 'F' => 5),
+    'F' => array('A' => 6, 'C' => 3, 'D' => 2, 'E' => 5),
+);
+
+$g = new Dijkstra($graph);
+
+$g->shortestPath('D', 'C');  // 3:D->E->C
+$g->shortestPath('C', 'A');  // 6:C->E->D->A
+$g->shortestPath('B', 'F');  // 3:B->D->F
+$g->shortestPath('F', 'A');  // 5:F->D->A
+$g->shortestPath('A', 'G');  // Нет пути из A в G
+```
+
+</details>
+
+[⏏ К содержанию](#содержание)
+
 ## Деревья
 
-Дерево — это иерархическая структура данных, состоящая из узлов (вершин) и ребер (дуг). Деревья по сути связанные графы
+`Дерево` — это иерархическая структура данных, состоящая из узлов (вершин) и ребер (дуг). Деревья по сути связанные
+графы
 без циклов.
 
 Типы деревьев
@@ -1132,6 +1529,438 @@ class Queue {
 - В прямом порядке (сверху вниз) — префиксная форма.
 - В симметричном порядке (слева направо) — инфиксная форма.
 - В обратном порядке (снизу вверх) — постфиксная форма.
+
+<details>
+<summary>класс BinTree (нужно доделать)</summary>
+
+```php
+class Node
+{
+    public $value;
+    public $left;
+    public $right;
+}
+
+// pre-order (прямой порядок)– обработка текущего узла, а затем переход к левому и правому.
+//in-order (симметричная) – сначала проход левой стороны, обработка текущего узла и обход правой стороны.
+//post-order (обратный порядок) – обход левой и правой стороны, затем обработка текущего значения.
+//level-order (в ширину) – обработка текущего значения, затем обработка потомков и переход на следующий уровень.
+
+//https://habr.com/ru/post/190176/#Tree
+//https://russianblogs.com/article/5588930940/
+
+class BinTree
+{
+    // нерекурсивный
+    // Обход среднего порядка
+    // левое поддерево → корневой узел → правое поддерево
+    public function inOrder($root)
+    {
+        $stack = array();
+        $current_node = $root;
+        while (!empty($stack) || $current_node != null) {
+            while ($current_node != null) {
+                $stack[] = $current_node;
+                $current_node = $current_node->left;
+            }
+            $current_node = array_pop($stack);
+            echo $current_node->value . " ";
+            $current_node = $current_node->right;
+        }
+    }
+
+    // рекурсия
+    // Обход среднего порядка
+    public function inOrderRecursive($root)
+    {
+        if ($root != null) {
+            if ($root->left != null) {
+                $this->inOrderRecursive($root->left); // рекурсивный обход левого дерева
+            }
+            echo $root->value . " ";
+            if ($root->right != null) {
+                $this->inOrderRecursive($root->right); // Рекурсивно пройти по правому дереву
+            }
+        }
+    }
+
+    // нерекурсивный
+    // Предварительный порядок обхода корневого узла → левое поддерево → правое поддерево
+    // Сначала посещаем корневой узел, затем проходим левое поддерево и, наконец, проходим правое поддерево;
+    // и при обходе левого и правого поддеревьев вам все равно нужно сначала пройти через корневой узел, затем левое поддерево и, наконец, правое поддерево
+    public function preOrder($root)
+    {
+        $stack = array();
+        $stack[] = $root;
+        while (!empty($stack)) {
+            $center_node = array_pop($stack);
+            echo $center_node->value . " "; // Сначала выводим корневой узел
+            if ($center_node->right != null) {
+                $stack[] = $center_node->right; // Толкаем левое поддерево
+            }
+            if ($center_node->left != null) {
+                $stack[] = $center_node->left;
+            }
+        }
+    }
+
+    // рекурсия
+    // обход предварительного заказа
+    public function preOrderRecursive($root)
+    {
+        if ($root != null) {
+            echo $root->value . " "; // корень
+            if ($root->left != null) {
+                $this->preOrderRecursive($root->left); // рекурсивно пройти по левому дереву
+            }
+            if ($root->right != null) {
+                $this->preOrderRecursive($root->right); // рекурсивно проходим правое дерево
+            }
+        }
+    }
+
+    // нерекурсивный
+    // Пост-порядок обхода левое поддерево → правое поддерево → корневой узел
+    // Сначала пройти левое поддерево, затем пройти правое поддерево и, наконец, посетить корневой узел; аналогично, при обходе левого и правого поддеревьев сначала необходимо пройти левое поддерево, затем правое поддерево и, наконец, корневой узел
+    public function postOrder($root)
+    {
+        $stack = array();
+        $out_stack = array();
+        $stack[] = $root;
+        while (!empty($stack)) {
+            $center_node = array_pop($stack);
+            $out_stack[] = $center_node; // Сначала проталкиваем корневой узел и, наконец, выводим
+            if ($center_node->left != null) {
+                $stack[] = $center_node->left;
+            }
+            if ($center_node->right != null) {
+                $stack[] = $center_node->right;
+            }
+        }
+        while (!empty($out_stack)) {
+            $center_node = array_pop($out_stack);
+            echo $center_node->value . " ";
+        }
+    }
+
+    // рекурсия
+    // Пост-ордер обхода
+    public function postOrderRecursive($root)
+    {
+        if ($root != null) {
+            if ($root->left != null) {
+                $this->postOrderRecursive($root->left); // Рекурсивно пройти по левому дереву
+            }
+            if ($root->right != null) {
+                $this->postOrderRecursive($root->right); // Рекурсивно пройти по правому дереву
+            }
+            echo $root->value . " "; // корень
+        }
+    }
+
+    // нерекурсивный
+    public function levelOrder($root)
+    {
+        if ($root == null) {
+            return;
+        }
+        $node = $root;
+        $queue = array();
+        $queue[] = $node; // Корневой узел присоединяется к очереди
+        while (!empty ($queue)) {// Продолжаем вывод узлов, пока очередь не станет пустой
+            $node = array_shift($queue); // Первый элемент команды гаснет
+            echo $node->value . " ";
+            // Левый узел первым входит в очередь
+            if ($node->left != null) {
+                $queue[] = $node->left;
+            }
+            // Затем правая нода присоединяется к команде
+            if ($node->right != null) {
+                $queue[] = $node->right;
+            }
+        }
+    }
+
+    // рекурсия
+    // Получаем количество уровней дерева (максимальная глубина)
+    function getDepth($root): int
+    {
+        if ($root == null) {// узел пуст
+            return 0;
+        }
+        if ($root->left == null && $root->right == null) {// Только корневой узел
+            return 1;
+        }
+
+        $left_depth = $this->getDepth($root->left);
+        $right_depth = $this->getDepth($root->right);
+
+        return ($left_depth > $right_depth ? $left_depth : $right_depth) + 1;
+//        return $left_depth > $right_depth ? ($left_depth + 1) : ($right_depth + 1);
+    }
+
+    public function levelOrderRecursive($root)
+    {
+        // Пустое дерево или необоснованный уровень
+        $depth = $this->getDepth($root);
+        if ($root == null || $depth < 1) {
+            return;
+        }
+        for ($i = 1; $i <= $depth; $i++) {
+            $this->printTree($root, $i);
+        }
+    }
+
+    public function printTree($root, $level)
+    {
+        // Пустое дерево или необоснованный уровень
+        if ($root == null || $level < 1) {
+            return;
+        }
+        if ($level == 1) {
+            echo $root->value. " ";;
+        }
+        $this->printTree($root->left, $level - 1);
+        $this->printTree($root->right, $level - 1);
+    }
+}
+
+// контрольная работа
+$a = new Node();
+$b = new Node();
+$c = new Node();
+$d = new Node();
+$e = new Node();
+$f = new Node();
+$g = new Node(); //
+$h = new Node(); //
+
+$a->value = "A";
+$b->value = "B";
+$c->value = "C";
+$d->value = "D";
+$e->value = "E";
+$f->value = "F";
+$g->value = "G";
+$h->value = "H";
+
+$a->left = $b;
+$a->right = $c;
+$b->left = $d;
+$b->right = $e;
+$c->left = $f;
+$d->left = $g;
+$d->right = $h;
+
+$bst = new BinTree();
+
+echo "---- 1 ----";
+echo "\n";
+echo "Безрекурсивный обход перед порядком:";
+$bst->preOrder($a);
+echo "\n";
+echo "Обход рекурсии и предзаказа:";
+$bst->preOrderRecursive($a);
+echo "\n";
+
+echo "----сначала глубина 2----";
+echo "\n";
+echo "Безрекурсивный обход среднего порядка:";
+$bst->inOrder($a);
+echo "\n";
+echo "Обход среднего порядка рекурсии:";
+$bst->inOrderRecursive($a);
+echo "\n";
+
+echo "---- сначала глубина 3----";
+echo "\n";
+echo "Безрекурсивный обход после заказа:";
+$bst->postOrder($a);
+echo "\n";
+echo "Обход рекурсии и пост-порядка:";
+$bst->postOrderRecursive($a);
+echo "\n";
+
+
+echo "---- сначала в ширину 4----";
+echo "\n";
+echo "Безрекурсивный:";
+$bst->levelOrder($a);
+echo "\n";
+echo "Рекурсивный:";
+$bst->levelOrderRecursive($a);
+echo "\n";
+
+//---- 1 ----
+//Безрекурсивный обход перед порядком:A B D G H E C F
+//Обход рекурсии и предзаказа:A B D G H E C F
+//----сначала глубина 2----
+//Безрекурсивный обход среднего порядка:G D H B E A F C
+//Обход среднего порядка рекурсии:G D H B E A F C
+//---- сначала глубина 3----
+//Безрекурсивный обход после заказа:G H D E B F C A
+//Обход рекурсии и пост-порядка:G H D E B F C A
+//---- сначала в ширину 4----
+//Безрекурсивный:A B C D E F G H
+//Рекурсивный:A B C D E F G H
+
+```
+
+</details>
+
+[⏏ К содержанию](#содержание)
+
+## Куча
+
+`Куча` — специальная, деревоподобная структура, у которой есть одно свойство — любой родительский узел всегда больше
+либо равен своим потомкам. Таким образом, при выполнении данного условия, корневой элемент кучи всегда будет
+максимальным. Данный вариант называют максимальной (полной) кучей или maxheap. Куча, где корневой элемент минимален, а
+каждый родительский узел меньше или равен своим потомкам — минимальная куча или minheap.
+
+<details>
+<summary>класс BinaryHeap</summary>
+
+```php
+// https://habr.com/ru/post/190474/
+class BinaryHeap
+{
+    protected $heap;
+
+    public function __construct()
+    {
+        $this->heap = array();
+    }
+
+    public function isEmpty()
+    {
+        return empty($this->heap);
+    }
+
+    public function count()
+    {
+        // возвращаем размер кучи
+        return count($this->heap) - 1;
+    }
+
+    public function extract()
+    {
+        if ($this->isEmpty()) {
+            throw new RunTimeException('Куча пуста!');
+        }
+
+        // извлечем первый элемент из кучи и присвоим его как корень
+        $root = array_shift($this->heap);
+
+        if (!$this->isEmpty()) {
+            // переместим последний элемент кучи на ее вершину
+            // чтобы избавиться от двух разделенных между собой ветвей
+            $last = array_pop($this->heap);
+            array_unshift($this->heap, $last);
+
+            // превратим полукучу в кучу
+            $this->adjust(0);
+        }
+
+        return $root;
+    }
+
+    public function compare($item1, $item2)
+    {
+        if ($item1 === $item2) {
+            return 0;
+        }
+        // обратное сравнение даст нам minheap
+        return ($item1 > $item2 ? 1 : -1);
+    }
+
+    protected function isLeaf($node)
+    {
+        // здесь всегда будет 2n + 1 узел в "подкуче"
+        return ((2 * $node) + 1) > $this->count();
+    }
+
+    protected function adjust($root)
+    {
+        // спускаемся как можно ниже
+        if (!$this->isLeaf($root)) {
+            $left = (2 * $root) + 1; // левый потомок
+            $right = (2 * $root) + 2; // правый потомок
+
+            $h = $this->heap;
+            // если корень меньше своих потомков
+            if (
+                (isset($h[$left]) &&
+                    $this->compare($h[$root], $h[$left]) < 0)
+                || (isset($h[$right]) &&
+                    $this->compare($h[$root], $h[$right]) < 0)
+            ) {
+                // находим старшего потомка
+                if (isset($h[$left]) && isset($h[$right])) {
+                    $j = ($this->compare($h[$left], $h[$right]) >= 0)
+                        ? $left : $right;
+                } else {
+                    if (isset($h[$left])) {
+                        $j = $left; // левый потомок
+                    } else {
+                        $j = $right; // правый потомк
+                    }
+                }
+
+                // меняем местами с корнем
+                list(
+                    $this->heap[$root], $this->heap[$j]
+                    ) =
+                    array($this->heap[$j], $this->heap[$root]);
+
+                // рекурсивно перебираем кучу относительно
+                // нового корневого узла $j
+                $this->adjust($j);
+            }
+        }
+    }
+
+
+    public function insert($item)
+    {
+        // вставим новые элементы в конец кучи
+        $this->heap[] = $item;
+
+        // определим им корректное место
+        $place = $this->count();
+        $parent = floor($place / 2);
+        // пока не на вершине и больше родителя
+        while (
+            $place > 0 && $this->compare(
+                $this->heap[$place],
+                $this->heap[$parent]
+            ) >= 0
+        ) {
+            // меняем местами
+            list(
+                $this->heap[$place], $this->heap[$parent]
+                ) =
+                array($this->heap[$parent], $this->heap[$place]);
+            $place = $parent;
+            $parent = floor($place / 2);
+        }
+    }
+}
+
+$heap = new BinaryHeap();
+$heap->insert(19);
+$heap->insert(36);
+$heap->insert(54);
+$heap->insert(100);
+$heap->insert(17);
+
+//while (!$heap->isEmpty()) {
+//    echo $heap->extract() . "n";
+//}
+```
+
+</details>
+
+[⏏ К содержанию](#содержание)
 
 ## Хэш
 
@@ -1156,6 +1985,9 @@ class Queue {
 
 - метод цепочек;
 - метод открытой адресации: линейное и квадратичное зондирование.
+
+<details>
+<summary>класс Hach</summary>
 
 ```php
 
@@ -1242,5 +2074,9 @@ class Hash
     }
 }
 ```
+
+</details>
+
+[⏏ К содержанию](#содержание)
 
 [//]: # (https://habr.com/ru/post/422259/)
