@@ -4,37 +4,52 @@
 
 ---
 
-- [Алгоритмическая сложность]()
-- [Алгоритмы поиска]()
-    - [Линейный поиск]()
-    - [Бинарный поиск]()
-    - [Экспоненциальный поиск]()
+- [Алгоритмическая сложность](#алгоритмическая-сложность)
+- [Алгоритмы поиска](#алгоритмы-поиска)
+    - [Линейный поиск](#линейный-поиск)
+    - [Бинарный поиск](#бинарный-поиск)
+    - [Экспоненциальный поиск](#экспоненциальный-поиск)
 - [Алгоритмы сортировки]()
-    - [Пузырькова]()
-    - [Быстрая]()
-    - [Выбором]()
-    - [Универсальная]()
-    - [Перемешиванием]()
-    - [Расческой]()
-    - [Гномья]()
-    - [Вставками]()
-    - [Слиянием]()
-    - [Терпеливая]()
-    - [Шелла]()
-- [Cтруктуры данных]()
-    - [Связный список]()
-    - [Стек]()
-    - [Очередь]()
-    - [Хэш-таблица]()
-    - [Деревья]()
-    - [Куча]()
-    - [Граф]()
+    - [Сортировка пузырьком](#сортировка-пузырьком--bubble-sort)
+    - [Быстрая сортировка](#быстрая-сортировка--quick-sort)
+    - [Сортировка выбором](#сортировка-выбором--selection-sort)
+    - [Универсальная](#универсальная)
+    - [Сортировка перемешиванием](#сортировка-перемешиванием--shaker-cocktail-ripple-shuffle-shuttle-sort)
+    - [Сортировка расчёской](#сортировка-расчёской--comb-sort)
+    - [Гномья](#гномья--gnome-sort)
+    - [Сортировка вставками](#сортировка-вставками--insertion-sort)
+    - [Сортировка слиянием](#сортировка-слиянием--merge-sort)
+    - [Терпеливая (Пасьянсная)](#терпеливая-пасьянсная--patience-sort)
+    - [Сортировка Шелла](#сортировка-шелла--shell-sort)
+- [Cтруктуры данных](#cтруктуры-данных)
+    - [Связный список](#связный-список)
+    - [Стек](#очередь-и-стек)
+    - [Очередь](#очередь-и-стек)
+    - [Граф](#граф)
+    - [Деревья](#деревья)
+    - [Куча](#куча)
+    - [Хэш-таблица](#хэш)
 
 ---
+
+Ссылки:
 
 [//]: # (https://vk.com/@miet_acm-lekciya-2-algoritmy-sortirovki-i-poiska)
 
 [классы//]: # (https://github.com/bazgalev/algorithms)
+
+[хэш//]: # (https://habr.com/ru/post/422259/)
+
+[хэш//]: # (https://habr.com/ru/company/vk/blog/308240/)
+
+[tree//]: # (https://habr.com/ru/post/190176/#Tree)
+
+[tree//]: # (https://russianblogs.com/article/5588930940/)
+
+
+- https://bimlibik.github.io/posts/sorting-algorithm/
+
+- [https://translated.turbopages.org/](https://translated.turbopages.org/proxy_u/en-ru.ru.f055177c-63f33c99-24f60e28-74722d776562/https/www.geeksforgeeks.org/searching-algorithms/#algo)
 
 ## Алгоритмическая сложность
 
@@ -137,10 +152,7 @@ function memoryUsage($usage, $base_memory_usage)
 
 ## Алгоритмы поиска
 
-https://bimlibik.github.io/posts/sorting-algorithm/
-[https://translated.turbopages.org/](https://translated.turbopages.org/proxy_u/en-ru.ru.f055177c-63f33c99-24f60e28-74722d776562/https/www.geeksforgeeks.org/searching-algorithms/#algo)
-
-## Линейный поиск - самый простой метод поиска.
+## Линейный поиск
 
 `Линейный поиск` - самый простой метод поиска. Элемент которые нужно
 найти, последовательно ищется в списке.
@@ -200,7 +212,7 @@ function searchRecursive($arr, int $size, int $x)
 даже быстрее.
 
 <details>
-<summary>binarySearch</summary>
+<summary>⏺binarySearch</summary>
 
 ```php
 $stopWords = ['а', 'без', 'ближе', 'браво', 'бы', 'вам', 'вас', 'весь', 'во', 'все', 'всего', 'вы'];
@@ -274,7 +286,7 @@ print_r(binarySearch($items, 7, 0, count($items) )); // => 5
 2. Выполните бинарный поиск в указанном выше диапазоне.
 
 <details>
-<summary>exponentialSearch</summary>
+<summary>⏺exponentialSearch</summary>
 
 ```php
 function exponentialSearch($arr, $n, $x)
@@ -346,7 +358,7 @@ function binarySearch($arr, $l, $r, $x)
 другие методы, например, шейкерная сортировка и сортировка расчёской.
 
 <details>
-<summary>bubbleSort</summary>
+<summary>⏺bubbleSort</summary>
 
 ```php
 function bubbleSort1(array $data)
@@ -430,7 +442,7 @@ function bubbleSort3(array &$array) {
   котором только один элемент или отсутствуют элементы.
 
 <details>
-<summary>quickSort</summary>
+<summary>⏺quickSort</summary>
 
 ```php
 function quickSort($arr){
@@ -508,7 +520,7 @@ class QuickSorting implements SortingInterface
 - Повторяем предыдущий шаг до тех пор, пока массив не будет отсортирован.
 
 <details>
-<summary>selectionSort</summary>
+<summary>⏺selectionSort</summary>
 
 ```php
 function selectionSort(&$arr) {
@@ -540,7 +552,7 @@ function selectionSort(&$arr) {
 вызывает компаратор каждый раз, когда требуется сравнить два элемента и определить, какой из них больше.
 
 <details>
-<summary>compare</summary>
+<summary>⏺compare</summary>
 
 ```php
 $products = [
@@ -593,7 +605,7 @@ bubbleSort($products, 'compareByPrice');
 только в одном направлении (слева направо).
 
 <details>
-<summary>cocktailSort (Перемешиванием)</summary>
+<summary>⏺cocktailSort (Перемешиванием)</summary>
 
 ```php
 function cocktailSort($arr){
@@ -651,7 +663,7 @@ function cocktailSort($arr){
 Оптимальное значение фактора уменьшения - 1,247.
 
 <details>
-<summary>combSort</summary>
+<summary>⏺combSort</summary>
 
 ```php
 function combSort($arr){
@@ -688,7 +700,7 @@ function combSort($arr){
 следующего — значит мы закончили. Изначально мы находимся на втором элементе массива.
 
 <details>
-<summary>gnomeSort</summary>
+<summary>⏺gnomeSort</summary>
 
 ```php
 function gnomeSort($arr){
@@ -728,7 +740,7 @@ function gnomeSort($arr){
 - Повторям шаг 2 до тех пор, пока в неотсортированном массиве не останется элементов.
 
 <details>
-<summary>insertionSort</summary>
+<summary>⏺insertionSort</summary>
 
 ```php
 function insertionSort(&$arr){
@@ -764,7 +776,7 @@ function insertionSort(&$arr){
 - Слияние подмассивов продолжается до тех пор, пока не получим один, отсортированный массив.
 
 <details>
-<summary>mergeSort</summary>
+<summary>⏺mergeSort</summary>
 
 ```php
 function mergeSort($arr){
@@ -814,7 +826,7 @@ function merge($left, $right){
 карточной игры "Солитёр" — "Patience".
 
 <details>
-<summary>patienceSort</summary>
+<summary>⏺patienceSort</summary>
 
 ```php
 class PilesHeap extends SplMinHeap {
@@ -873,7 +885,7 @@ function patienceSort(&$n) {
 вставками.
 
 <details>
-<summary>shellSort</summary>
+<summary>⏺shellSort</summary>
 
 ```php
 function shellSort($arr)
@@ -916,15 +928,15 @@ function shellSort($arr)
 
 Популярные структуры:
 
-- [Связный список]()
-- [Стек]()
-- [Очередь]()
+- [Связный список](#связный-список)
+- [Стек](#очередь-и-стек)
+- [Очередь](#очередь-и-стек)
+- [Граф](#граф)
+- [Деревья](#деревья)
+- [Куча](#куча)
 - Множество
 - Map
-- [Хэш-таблица]()
-- [Деревья]()
-- [Куча]()
-- [Граф]()
+- [Хэш-таблица](#хэш)
 
 Библиотека DS имеет в себе эффективные структуры данных для PHP 7, представленные как альтернативы для типа array
 
@@ -967,7 +979,7 @@ git clone https://github.com/php-ds/extension "php-ds"
 - isEmpty — возвращает True, если связанный список пуст
 
 <details>
-<summary>класс LinkedList</summary>
+<summary>⏺класс LinkedList</summary>
 
 ```php
 class LinkedListNode
@@ -1177,7 +1189,7 @@ $list = new LinkedList();
 | Длина                | O(1)   | O(n)   |
 
 <details>
-<summary>класс DoubleLinkedList</summary>
+<summary>⏺класс DoubleLinkedList</summary>
 
 ```php
 class DoubleLinkedListNode
@@ -1357,7 +1369,7 @@ class Stack {
 ```
 
 <details>
-<summary>Реализация без встроенных функций </summary>
+<summary>⏺Реализация без встроенных функций </summary>
 
 ```php
 class PhpStack
@@ -1406,7 +1418,7 @@ class PhpStack
 </details>
 
 <details>
-<summary>Реализация стека через односвязный список</summary>
+<summary>⏺Реализация стека через односвязный список</summary>
 
 ```php
 class Stack {
@@ -1467,7 +1479,7 @@ class Queue {
 Смешанные
 
 <details>
-<summary>класс Graph (по возможности улучшить)</summary>
+<summary>⏺класс Graph (по возможности улучшить)</summary>
 
 ```php
 class Graph
@@ -1578,7 +1590,7 @@ $g->breadthFirstSearch('A', 'G');
 </details>
 
 <details>
-<summary>Поиск оптимального пути</summary>
+<summary>⏺Поиск оптимального пути</summary>
 
 ```php
 class Dijkstra
@@ -1700,7 +1712,7 @@ $g->shortestPath('A', 'G');  // Нет пути из A в G
 - В обратном порядке (снизу вверх) — постфиксная форма.
 
 <details>
-<summary>класс BinTree (нужно доделать)</summary>
+<summary>⏺класс BinTree (нужно доделать)</summary>
 
 ```php
 class Node
@@ -1987,7 +1999,7 @@ echo "\n";
 каждый родительский узел меньше или равен своим потомкам — минимальная куча или minheap.
 
 <details>
-<summary>класс BinaryHeap</summary>
+<summary>⏺класс BinaryHeap</summary>
 
 ```php
 // https://habr.com/ru/post/190474/
@@ -2133,8 +2145,6 @@ $heap->insert(17);
 
 ## Хэш
 
-[//]: # (https://habr.com/ru/company/vk/blog/308240/)
-
 `Хэширование` — это процесс, используемый для уникальной идентификации объектов и хранения каждого объекта в заранее
 рассчитанном уникальном индексе (ключе). По сути это массив, в котором ключ представлен в виде хеш-функции.
 
@@ -2156,7 +2166,7 @@ $heap->insert(17);
 - метод открытой адресации: линейное и квадратичное зондирование.
 
 <details>
-<summary>класс Hach</summary>
+<summary>⏺класс Hach</summary>
 
 ```php
 
@@ -2247,5 +2257,3 @@ class Hash
 </details>
 
 [⏏ К содержанию](#содержание)
-
-[//]: # (https://habr.com/ru/post/422259/)
