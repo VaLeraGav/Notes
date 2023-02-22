@@ -9,7 +9,7 @@
     - [Линейный поиск](#линейный-поиск)
     - [Бинарный поиск](#бинарный-поиск)
     - [Экспоненциальный поиск](#экспоненциальный-поиск)
-- [Алгоритмы сортировки]()
+- [Алгоритмы сортировки](#сортировки)
     - [Сортировка пузырьком](#сортировка-пузырьком--bubble-sort)
     - [Быстрая сортировка](#быстрая-сортировка--quick-sort)
     - [Сортировка выбором](#сортировка-выбором--selection-sort)
@@ -45,7 +45,6 @@
 [tree//]: # (https://habr.com/ru/post/190176/#Tree)
 
 [tree//]: # (https://russianblogs.com/article/5588930940/)
-
 
 - https://bimlibik.github.io/posts/sorting-algorithm/
 
@@ -523,18 +522,20 @@ class QuickSorting implements SortingInterface
 <summary>⏺selectionSort</summary>
 
 ```php
-function selectionSort(&$arr) {
+function selectionSort($arr)
+{
     $n = count($arr);
-    for($i = 0; $i < count($arr); $i++) {
+    for ($i = 0; $i < count($arr); $i++) {
         $min = $i;
-        for($j = $i + 1; $j < $n; $j++){
-            if($arr[$j] < $arr[$min]){
+        for ($j = $i + 1; $j < $n; $j++) {
+            if ($arr[$j] < $arr[$min]) {
                 $min = $j;
             }
         }
-       
-        list($arr[$i],$arr[$min]) = array($arr[$min],$arr[$i]);
+
+        list($arr[$i], $arr[$min]) = array($arr[$min], $arr[$i]);
     }
+    return $arr;
 }
 ```
 
@@ -608,34 +609,39 @@ bubbleSort($products, 'compareByPrice');
 <summary>⏺cocktailSort (Перемешиванием)</summary>
 
 ```php
-function cocktailSort($arr){
-	if (is_string($arr)) {$arr = str_split(preg_replace('/\s+/','',$arr));}
+function cocktailSort($arr)
+{
+    if (is_string($arr)) {
+        $arr = str_split(preg_replace('/\s+/', '', $arr));
+    }
 
-	do{
-		$swapped = false;
-		for($i=0;$i<count($arr);$i++){
-			if(isset($arr[$i+1])){
-				if($arr[$i] > $arr[$i+1]){
-					list($arr[$i], $arr[$i+1]) = array($arr[$i+1], $arr[$i]);
-					$swapped = true;
-				}
-			}			
-		}
- 
-		if ($swapped == false) {break;}
- 
-		$swapped = false;
-		for($i=count($arr)-1;$i>=0;$i--){
-			if(isset($arr[$i-1])){
-				if($arr[$i] < $arr[$i-1]) {
-					list($arr[$i],$arr[$i-1]) = array($arr[$i-1],$arr[$i]);
-					$swapped = true;
-				}
-			}
-		}
-	}while($swapped);
- 
-	return $arr;
+    do {
+        $swapped = false;
+        for ($i = 0; $i < count($arr); $i++) {
+            if (isset($arr[$i + 1])) {
+                if ($arr[$i] > $arr[$i + 1]) {
+                    list($arr[$i], $arr[$i + 1]) = array($arr[$i + 1], $arr[$i]);
+                    $swapped = true;
+                }
+            }
+        }
+
+        if (!$swapped) {
+            break;
+        }
+
+        $swapped = false;
+        for ($i = count($arr) - 1; $i >= 0; $i--) {
+            if (isset($arr[$i - 1])) {
+                if ($arr[$i] < $arr[$i - 1]) {
+                    list($arr[$i], $arr[$i - 1]) = array($arr[$i - 1], $arr[$i]);
+                    $swapped = true;
+                }
+            }
+        }
+    } while ($swapped);
+
+    return $arr;
 }
 ```
 
@@ -666,23 +672,26 @@ function cocktailSort($arr){
 <summary>⏺combSort</summary>
 
 ```php
-function combSort($arr){
-	$gap = count($arr);
-        $swap = true;
-	while ($gap > 1 || $swap){
-		if($gap > 1) {$gap /= 1.25;}
+function combSort($arr)
+{
+    $gap = count($arr);
+    $swap = true;
+    while ($gap > 1 || $swap) {
+        if ($gap > 1) {
+            $gap /= 1.25;
+        }
 
-		$swap = false;
-		$i = 0;
-		while($i+$gap < count($arr)){
-			if($arr[$i] > $arr[$i+$gap]){
-				list($arr[$i], $arr[$i+$gap]) = array($arr[$i+$gap],$arr[$i]);
-				$swap = true;
-			}
-			$i++;
-		}
-	}
-	return $arr;
+        $swap = false;
+        $i = 0;
+        while ($i + $gap < count($arr)) {
+            if ($arr[$i] > $arr[$i + $gap]) {
+                list($arr[$i], $arr[$i + $gap]) = array($arr[$i + $gap], $arr[$i]);
+                $swap = true;
+            }
+            $i++;
+        }
+    }
+    return $arr;
 }
 ```
 
@@ -703,23 +712,24 @@ function combSort($arr){
 <summary>⏺gnomeSort</summary>
 
 ```php
-function gnomeSort($arr){
-	$i = 1;
-	$j = 2;
-	while($i < count($arr)){
-		if ($arr[$i-1] <= $arr[$i]){
-			$i = $j;
-			$j++;
-		}else{
-			list($arr[$i],$arr[$i-1]) = array($arr[$i-1],$arr[$i]);
-			$i--;
-			if($i == 0){
-				$i = $j;
-				$j++;
-			}
-		}
-	}
-	return $arr;
+function gnomeSort($arr)
+{
+    $i = 1;
+    $j = 2;
+    while ($i < count($arr)) {
+        if ($arr[$i - 1] <= $arr[$i]) {
+            $i = $j;
+            $j++;
+        } else {
+            list($arr[$i], $arr[$i - 1]) = array($arr[$i - 1], $arr[$i]);
+            $i--;
+            if ($i == 0) {
+                $i = $j;
+                $j++;
+            }
+        }
+    }
+    return $arr;
 }
 ```
 
@@ -743,17 +753,20 @@ function gnomeSort($arr){
 <summary>⏺insertionSort</summary>
 
 ```php
-function insertionSort(&$arr){
-	for($i=0;$i<count($arr);$i++){
-		$val = $arr[$i];
-		$j = $i-1;
-		while($j>=0 && $arr[$j] > $val){
-			$arr[$j+1] = $arr[$j];
-			$j--;
-		}
-		$arr[$j+1] = $val;
-	}
+function insertionSort($arr)
+{
+    for ($i = 0; $i < count($arr); $i++) {
+        $val = $arr[$i];
+        $j = $i - 1;
+        while ($j >= 0 && $arr[$j] > $val) {
+            $arr[$j + 1] = $arr[$j];
+            $j--;
+        }
+        $arr[$j + 1] = $val;
+    }
+    return $arr;
 }
+
 ```
 
 </details>
@@ -779,36 +792,40 @@ function insertionSort(&$arr){
 <summary>⏺mergeSort</summary>
 
 ```php
-function mergeSort($arr){
-	if(count($arr) == 1 ) {return $arr;}
-	$mid = count($arr) / 2;
+function mergeSort($arr)
+{
+    if (count($arr) == 1) {
+        return $arr;
+    }
+    $mid = count($arr) / 2;
     $left = array_slice($arr, 0, $mid);
     $right = array_slice($arr, $mid);
-	$left = mergesort($left);
-	$right = mergesort($right);
-	return merge($left, $right);
+    $left = mergesort($left);
+    $right = mergesort($right);
+    return merge($left, $right);
 }
- 
-function merge($left, $right){
-	$res = array();
-	while (count($left) > 0 && count($right) > 0){
-		if($left[0] > $right[0]){
-			$res[] = $right[0];
-			$right = array_slice($right , 1);
-		}else{
-			$res[] = $left[0];
-			$left = array_slice($left, 1);
-		}
-	}
-	while (count($left) > 0){
-		$res[] = $left[0];
-		$left = array_slice($left, 1);
-	}
-	while (count($right) > 0){
-		$res[] = $right[0];
-		$right = array_slice($right, 1);
-	}
-	return $res;
+
+function merge($left, $right)
+{
+    $res = array();
+    while (count($left) > 0 && count($right) > 0) {
+        if ($left[0] > $right[0]) {
+            $res[] = $right[0];
+            $right = array_slice($right, 1);
+        } else {
+            $res[] = $left[0];
+            $left = array_slice($left, 1);
+        }
+    }
+    while (count($left) > 0) {
+        $res[] = $left[0];
+        $left = array_slice($left, 1);
+    }
+    while (count($right) > 0) {
+        $res[] = $right[0];
+        $right = array_slice($right, 1);
+    }
+    return $res;
 }
 ```
 
@@ -829,40 +846,48 @@ function merge($left, $right){
 <summary>⏺patienceSort</summary>
 
 ```php
-class PilesHeap extends SplMinHeap {
-    public function compare($pile1, $pile2) {
+class PilesHeap extends SplMinHeap
+{
+    public function compare($pile1, $pile2)
+    {
         return parent::compare($pile1->top(), $pile2->top());
     }
 }
- 
-function patienceSort(&$n) {
+
+function patienceSort(&$n)
+{
     $piles = array();
     // sort into piles
     foreach ($n as $x) {
         // binary search
-        $low = 0; $high = count($piles)-1;
+        $low = 0;
+        $high = count($piles) - 1;
         while ($low <= $high) {
             $mid = (int)(($low + $high) / 2);
-            if ($piles[$mid]->top() >= $x)
-                {$high = $mid - 1;}
-            else
-                {$low = $mid + 1;}
+            if ($piles[$mid]->top() >= $x) {
+                $high = $mid - 1;
+            } else {
+                $low = $mid + 1;
+            }
         }
         $i = $low;
-        if ($i == count($piles))
-            {$piles[] = new SplStack();}
+        if ($i == count($piles)) {
+            $piles[] = new SplStack();
+        }
         $piles[$i]->push($x);
     }
- 
+
     // priority queue allows us to merge piles efficiently
     $heap = new PilesHeap();
-    foreach ($piles as $pile)
-        {$heap->insert($pile);}
+    foreach ($piles as $pile) {
+        $heap->insert($pile);
+    }
     for ($c = 0; $c < count($n); $c++) {
         $smallPile = $heap->extract();
         $n[$c] = $smallPile->pop();
-        if (!$smallPile->isEmpty())
-        {$heap->insert($smallPile);}
+        if (!$smallPile->isEmpty()) {
+            $heap->insert($smallPile);
+        }
     }
     assert($heap->isEmpty());
 }
@@ -890,22 +915,20 @@ function patienceSort(&$n) {
 ```php
 function shellSort($arr)
 {
-	$inc = round(count($arr)/2);
-	while($inc > 0)
-	{
-		for($i = $inc; $i < count($arr);$i++){
-			$temp = $arr[$i];
-			$j = $i;
-			while($j >= $inc && $arr[$j-$inc] > $temp)
-			{
-				$arr[$j] = $arr[$j - $inc];
-				$j -= $inc;
-			}
-			$arr[$j] = $temp;
-		}
-		$inc = round($inc/2.2);
-	}
-	return $arr;
+    $inc = round(count($arr) / 2);
+    while ($inc > 0) {
+        for ($i = $inc; $i < count($arr); $i++) {
+            $temp = $arr[$i];
+            $j = $i;
+            while ($j >= $inc && $arr[$j - $inc] > $temp) {
+                $arr[$j] = $arr[$j - $inc];
+                $j -= $inc;
+            }
+            $arr[$j] = $temp;
+        }
+        $inc = round($inc / 2.2);
+    }
+    return $arr;
 }
 ```
 

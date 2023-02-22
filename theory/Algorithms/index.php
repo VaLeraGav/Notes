@@ -1,62 +1,142 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sorting Alrorithms</title>
-</head>
-<body>
-
 <?php
-set_time_limit(0); //Время выполнения не ограничено!
 
-$select = ['ghbdtn', 'aylhtq', 'wewe'];
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
-$n = isset($_POST['n']) ? intval($_POST['n']) : 1000;
-$min = isset($_POST['mix']) ? intval($_POST['mix']) : -100;
-$max = isset($_POST['max']) ? intval($_POST['max']) : 100;
-?>
+require_once('function.php');
 
-<form method="post" action=" <?= $_SERVER['PHP_SELF'] ?>">
-    <label>Размерность массива:
-        <input type="text" name="n" maxlength="5" size="5" value="<?= $n ?>">
-    </label>
-    <label>Минимум:
-        <input type="text" name="min" maxlength="4" size="4" value="<?= $min ?>">
-    </label>
-    <label>
-        Максимум:
-        <input type="text" name="max" maxlength="4" size="4" value="<?= $max ?>">
-    </label>
-    <label>Алгоритм сортировки:
-        <select name="alg" size="1">
-            <option value="">Выбрать</option>
-            <?php
-            foreach ($select as $i => $nameFun) : ?>
-                <option value="<?= $i ?>"><?= $nameFun ?></option>
-            <?php
-            endforeach; ?>
-        </select>
-    </label>
-    <input type="submit" name="action" value="Выполнить">
-</form>
+set_time_limit(0); //Время выполнения не ограничено
+
+function averagePerformance($f, $count = 1)
+{
+    $start = microtime(true);
+    for ($i = 0; $i < $count; $i++) {
+        $f();
+    }
+
+    return (microtime(true) - $start) / $count;
+}
+
+$sorts = [
+    ['Сортировка пузырьком', 'bubbleSort',],
+    ['Сортировка перемешиванием', 'cocktailSort',],
+    ['Гномья', 'gnomeSort',],
+    ['Быстрая сортировка', 'quickSort',],
+    ['Сортировка выбором', 'selectionSort',],
+    ['Сортировка расчёской', 'combSort',],
+    ['Сортировка вставками', 'insertionSort',],
+    ['Сортировка слиянием', 'mergeSort',],
+    ['Терпеливая', 'patienceSort',],
+    ['Сортировка Шелла', 'shellSort',],
+    ['Все', 'all']
+];
 
 
-<div>
-    <?php
-    if (isset($_POST['action'])): ?>
-        <?php if ($n < 2): ?>
-            <p>Меньше 2 элементов, нечего сортировать!</p>
-        <?php endif; ?>
+$n = 100;
+$min = -100;
+$max = 100;
+$count = 1;
 
-        <?php if (isset($select[0][1])): ?>
-            <p>Не выбран алгоритм!</p>
-        <?php endif; ?>
+function sortingComparisons($nameFuns, $arr, $count, $sorts)
+{
+    $nameFun = $nameFuns[0][1];
+    if ($nameFun !== 'all') {
+        return oneSort($arr, $nameFun, $count);
+    }
+    array_pop($sorts); // убрать all из массива
 
-    <?php
-    endif; ?>
-</div>
-</body>
-</html>
+    foreach ($sorts as [$name, $fun]) {
+        print_r("\n" . "-------------------");
+        print_r("\n" . $name);
+        print_r("\n" . manySort($arr, $fun, $count));
+        $arrFun[] =  manySortArr($arr, $fun, $count);
+
+    }
+    print_r($arrFun );
+    return "";
+}
+
+
+function oneSort($arr, $nameFun, $count)
+{
+    $t = averagePerformance(fn() => $nameFun([...$arr]), $count);
+    $oldArr = implode(',', $arr);
+    $sortedArr = implode(',', $nameFun($arr));
+    return <<<DOC
+Исходный массив: $oldArr
+
+Отсортированный массив: $sortedArr
+
+Затраченное время: $t
+DOC;
+}
+
+function manySort($arr, $nameFun, $count)
+{
+    $t = averagePerformance(fn() => $nameFun([...$arr]), $count);
+    return "Затраченное время: {$t}";
+}
+
+function manySortArr($arr, $nameFun, $count)
+{
+    $t = averagePerformance(fn() => $nameFun([...$arr]), $count);
+    return [$nameFun, $t];
+}
+
+
+
+while (true) {
+    echo "Количество элементов: {$n}\n";
+    if ($n < 2) {
+        echo "Меньше 2 элементов, нечего сортировать!\n";
+    }
+    echo "Минимальное: {$min}\n";
+    echo "Максимальное: {$max}\n";
+    echo "Количество раз выполнений: {$count}\n";
+    if ($count > 100) {
+        echo "Больше 100 не рекомендуется!\n";
+    }
+
+    echo "Изменить(y): ";
+    $choose = trim(fgets(STDIN)); // читает одну строку из STDIN
+    echo "===========================\n";
+    if ($choose === 'y') {
+        echo "Количество элементов: ";
+        $n = fgets(STDIN);
+        echo "Минимальное: ";
+        $min = fgets(STDIN);
+        echo "Максимальное: ";
+        $max = fgets(STDIN);
+        echo "Количество раз выполнений: ";
+        $count = fgets(STDIN);
+        echo "===========================\n";
+    }
+
+    foreach ($sorts as $i => $arrFun) {
+        echo $i . ". " . $arrFun[0] . "\n";
+    }
+    echo "Выбарть: ";
+    $numFun = fgets(STDIN);
+    echo "===========================";
+
+    $choice = array_slice($sorts, $numFun, 1);
+    echo "\nВыбрали: {$choice[0][0]} ";
+
+    $randArr = generateArray($n, $min, $max);
+
+    echo sortingComparisons($choice, $randArr, $count, $sorts);
+
+    echo "\n===========================\n";
+    echo "\nПовторить(y): ";
+    $repeat = trim(fgets(STDIN));
+    if ($repeat !== 'y') {
+        exit;
+    }
+    echo "===========================\n";
+}
+
+
+
+
+
