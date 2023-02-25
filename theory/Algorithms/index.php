@@ -14,7 +14,6 @@ function averagePerformance($f, $count = 1)
     for ($i = 0; $i < $count; $i++) {
         $f();
     }
-
     return (microtime(true) - $start) / $count;
 }
 
@@ -33,70 +32,68 @@ $sorts = [
 ];
 
 
-$n = 100;
+$n = 1000;
 $min = -100;
 $max = 100;
 $count = 1;
 
-function sortingComparisons($nameFuns, $arr, $count, $sorts)
+function sortingComparisons($namesFun, $arr, $count, $sorts)
 {
-    $nameFun = $nameFuns[0][1];
+    $nameFun = $namesFun[0][1];
     if ($nameFun !== 'all') {
-        return oneSort($arr, $nameFun, $count);
+        return outputArrAndTime($arr, $nameFun, $count);
     }
     array_pop($sorts); // убрать all из массива
 
     foreach ($sorts as [$name, $fun]) {
         print_r("\n" . "-------------------");
         print_r("\n" . $name);
-        print_r("\n" . manySort($arr, $fun, $count));
-        $arrFun[] =  manySortArr($arr, $fun, $count);
-
+        $arrFunTime[] = getArrFunTime($arr, $fun, $count);
     }
-    print_r($arrFun );
+    print_r("\n-------------------\n");
+
+    $min = $arrFunTime[0][1];
+    $max = $arrFunTime[0][1];
+    foreach ($arrFunTime as $i => [$name, $time]) {
+        if ($time < $min) {
+            $min = $time;
+        }
+        if ($time > $max) {
+            $max = $time;
+        }
+    }
+    print_r("\n$min\n");
+    print_r("\n$max\n");
     return "";
 }
 
 
-function oneSort($arr, $nameFun, $count)
+function outputArrAndTime($arrNotSort, $nameFun, $count): string
 {
-    $t = averagePerformance(fn() => $nameFun([...$arr]), $count);
-    $oldArr = implode(',', $arr);
-    $sortedArr = implode(',', $nameFun($arr));
+    $time = averagePerformance(fn() => $nameFun([...$arrNotSort]), $count);
+    $oldArr = implode(',', $arrNotSort);
+    $sortArr = implode(',', $nameFun($arrNotSort));
     return <<<DOC
 Исходный массив: $oldArr
 
-Отсортированный массив: $sortedArr
+Отсортированный массив: $sortArr
 
-Затраченное время: $t
+Затраченное время: $time
 DOC;
 }
 
-function manySort($arr, $nameFun, $count)
+function getArrFunTime($arrNotSort, $nameFun, $count): array
 {
-    $t = averagePerformance(fn() => $nameFun([...$arr]), $count);
-    return "Затраченное время: {$t}";
+    $time = averagePerformance(fn() => $nameFun([...$arrNotSort]), $count);
+    print_r("\nЗатраченное время: {$time}");
+    return [$nameFun, $time];
 }
-
-function manySortArr($arr, $nameFun, $count)
-{
-    $t = averagePerformance(fn() => $nameFun([...$arr]), $count);
-    return [$nameFun, $t];
-}
-
-
 
 while (true) {
     echo "Количество элементов: {$n}\n";
-    if ($n < 2) {
-        echo "Меньше 2 элементов, нечего сортировать!\n";
-    }
     echo "Минимальное: {$min}\n";
     echo "Максимальное: {$max}\n";
     echo "Количество раз выполнений: {$count}\n";
-    if ($count > 100) {
-        echo "Больше 100 не рекомендуется!\n";
-    }
 
     echo "Изменить(y): ";
     $choose = trim(fgets(STDIN)); // читает одну строку из STDIN
@@ -104,12 +101,20 @@ while (true) {
     if ($choose === 'y') {
         echo "Количество элементов: ";
         $n = fgets(STDIN);
+        if ($n < 2) {
+            echo "Меньше 2 элементов, нечего сортировать!\n";
+            exit;
+        }
         echo "Минимальное: ";
         $min = fgets(STDIN);
         echo "Максимальное: ";
         $max = fgets(STDIN);
         echo "Количество раз выполнений: ";
         $count = fgets(STDIN);
+        if ($count > 100) {
+            echo "Больше 1000 не рекомендуется!\n";
+            exit;
+        }
         echo "===========================\n";
     }
 
@@ -120,12 +125,12 @@ while (true) {
     $numFun = fgets(STDIN);
     echo "===========================";
 
-    $choice = array_slice($sorts, $numFun, 1);
-    echo "\nВыбрали: {$choice[0][0]} ";
+    $select = array_slice($sorts, $numFun, 1);
+    echo "\nВыбрали: {$select[0][0]} ";
 
     $randArr = generateArray($n, $min, $max);
 
-    echo sortingComparisons($choice, $randArr, $count, $sorts);
+    echo sortingComparisons($select, $randArr, $count, $sorts);
 
     echo "\n===========================\n";
     echo "\nПовторить(y): ";
@@ -135,8 +140,3 @@ while (true) {
     }
     echo "===========================\n";
 }
-
-
-
-
-
