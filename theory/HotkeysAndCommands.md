@@ -687,7 +687,9 @@ rules: { }
 
 # Docker
 
-(https://habr.com/ru/company/flant/blog/336654/)
+[Шпаргалка с командами](https://habr.com/ru/company/flant/blog/336654/)
+
+[Подробнее о Docker]()
 
 `docker run -t python:latest` - Запуск контейнера с флагом и с именем
 
@@ -791,7 +793,6 @@ rules: { }
 ```yaml
 # Версия схемы, которую мы используем.
 # Зависит от установленной версии docker
-# https://docs.docker.com/compose/compose-file/
 version: "3"
 # Определяем список сервисов — services
 # Эти сервисы будут частью нашего приложения
@@ -875,7 +876,38 @@ services:
 <details>
 <summary>Docker/php-fpm/Dockerfile <— создает новый images</summary>
 
-```
+```dockerfile
+# основной образ
+FROM node:18
+
+# коревая директория 
+WORKDIR /app
+
+# такой порядок обусловлен тем что когда будем пересобирать то
+# если nodu не был изменен то будет браться из кэша
+COPY package.json /app  
+
+RUN npm install # когда собирается 
+
+# скопирует все сущности которые лежат в корне либо
+# (./app, но мы уже зашли в нее с помощью WORKDIR)
+COPY . . 
+
+# создание переменной
+ENV PORT 3000 
+# необязательный
+EXPOSE $POST 
+
+ # файлы для работы с приложением, которые не будут удаляться 
+VOLUME [ "/app/data" ] 
+
+# каждый раз когда запускаем этот образ процесс будет выполняться в контейнере
+CMD [ "node", "app.js" ] 
+ # cоздаем том для хранения данных
+VOLUME /my_volume
+
+# ----------------------------------------------------
+
 FROM php:8.0-fpm
 
 RUN apt-get update && apt-get install -y \
@@ -892,7 +924,7 @@ RUN apt-get update && apt-get install -y \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
--------- у меня этот сработал ----------------------
+# -------- у меня этот сработал ----------------------
 
 RUN apt-get update && apt-get install -y \
 		libfreetype6-dev \
@@ -901,7 +933,7 @@ RUN apt-get update && apt-get install -y \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
 	&& docker-php-ext-install -j$(nproc) gd
 
-----------------------------------------------------
+# ----------------------------------------------------
 
 COPY ./_docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
 # ./_docker/app/php.ini эти настрокий будут скопированы в /usr/local/etc/php/conf.d/php.ini
@@ -914,36 +946,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 
 WORKDIR /var/www  # дает рабочую папку
 
-----------------------------------------------------
-
-WORKDIR /app
-
-COPY package.json /app  <-- такой порядок обусловлен тем что когда будем пересобирать то если nodu не был изменен  
-                      то будет браться из кэша
-                            
-RUN npm install <-- когда собирается 
-
-COPY . . <-- сотреть все сущности которые лежат в корне либо (. /app, но мы уже зашли в нее с помщью WORKDIR )
-
-ENV PORT 3000 <-- создание переменной
-
-EXPOSE $POST <-- необязательный, какой порт использовать 
-
-VOLUME [ "/app/data" ]  <-- файлы для работы приложения, которые не будту удаляться 
-
-CMP[ "node", "app.js" ] <-- каждый раз когда зпускаем этот образ
-
-----------------------------------------------------
-
-WORKDIR /var/www  <--# коревая директория 
-CMD ["php-fpm"]  <--# команда которая будет запускатся
+# ----------------------------------------------------
 
 ARG WEB_USER_ID=1000
 ARG WEB_USER_NAME=valery
 RUN useradd -m -u ${WEB_USER_ID} ${WEB_USER_NAME} || echo "Users exists"
 RUN sed -i -- "s/user = www-data/user = ${WEB_USER_NAME}/g" /usr/local/etc/php-fpm.d/www.conf
 USER ${WEB_USER_ID}
-
 ```
 
 </details>

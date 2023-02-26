@@ -336,6 +336,7 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 **Warning** и **Note**
 ```
 > **Warning**: This is a waring
+
 > **Note** : This is a note
 
 ## Дополнительные элементы
