@@ -785,7 +785,7 @@ rules: { }
 
 `docker-compose restart` - Перезапускает все остановленные и запущенные сервисы
 
-`docker-compose -f docker-compose.yml config` `ocker-compose config` - проверяет синтаксис файла для создания докеров
+`docker-compose -f docker-compose.yml config` / `docker-compose config` - проверяет синтаксис файла для создания докеров
 
 <details>
 <summary>docker-compose.yml <— создания контейнера</summary>

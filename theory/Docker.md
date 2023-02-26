@@ -798,20 +798,21 @@ node_modules/
 <details>
 <summary>Файлы</summary>
 
-```dockerfile
+```php
 server {
 
     root /var/www/public;
 
     location / {
-        try_files $uri /index.php?$args;
+        try_files $uri /index.php;
     }
+
 
     location ~ \.php$ {
                 try_files $uri =404;
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_pass php:9000;
-                fastcgi_index index.php;
+                fastcgi_pass php:9000;  // какой файл открыть
+                fastcgi_index index.php;  
                 include fastcgi_params;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                 fastcgi_param PATH_INFO $fastcgi_path_info;
@@ -897,6 +898,11 @@ services:
 </details>
 
 ---
+
+Технологический стек для веб разработки
+
+![docker.png](../assets/docker.png)
+
 
 <details>
 <summary>Файла 2 файла compose.yml и использование сети</summary>
