@@ -221,6 +221,18 @@
 print_r("test");
 ```
 
+```diff
+--- filename.orig
++++ filename
+@@ -line number,7 +line number,7 @@
+     good line of code #1
+     good line of code #2
+-    the original line with a wrong coding style
++    the line wrong coding style that has been corrected
+     good line of code #3
+     good line of code #4
+```
+
 ## Горизонтальные (разделительные) линии
 
 ```markdown
@@ -319,6 +331,12 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 
 - [X] Придумать внешний вид резюме
 - [ ] Написать основные категории
+
+```
+**Warning** и **Note**
+```
+> **Warning**: This is a waring
+> **Note** : This is a note
 
 ## Дополнительные элементы
 

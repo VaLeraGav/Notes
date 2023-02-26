@@ -5,6 +5,16 @@
 запуска в
 изолированном окружении)
 
+`Docker Daemon` (демон Докера) - Фоновый сервис, запущенный на хост-машине, который отвечает за создание, запуск и
+уничтожение Докер-контейнеров. Демон — это процесс, который запущен на операционной системе, с которой взаимодействует
+клиент.
+
+`Docker Client` (клиент Докера) - Утилита командной строки, которая позволяет пользователю взаимодействовать с демоном.
+Существуют другие формы клиента, например, Kitematic, с графическим интерфейсом.
+
+`Docker Hub` - Регистр Докер-образов. Грубо говоря, архив всех доступных образов. Если нужно, то можно содержать
+собственный регистр и использовать его для получения образов.
+
 `docker version` — показывает техническую информацию о самом Docker. Как о клиенте, так и о сервере.
 
 `docker login` — авторизует пользователя в реестре Docker.
@@ -23,6 +33,8 @@
 8. Сети
 9. рабочие проекты
 
+[Настройка LEMP сервера с помощью docker для простых проектов. Часть первая: База](https://habr.com/ru/company/nixys/blog/661443/)
+[Dockerfile, установка модулей в php](https://habr.com/ru/company/nixys/blog/663512/)
 ---
 
 ## Образ
@@ -49,8 +61,8 @@ PostgreSQL, nginx или вообще наше приложение. Дальш�
 (test_app - <имя вашего пользователя>)
 
 - `-t` задает имя для `images`
-    - latest - по умолчанию
-    - exс - может быть что угодно
+- `latest` - по умолчанию
+- `exс` - может быть что угодно
 
 `docker history` — показывает каждый слой образа в ретроспективе, отображая ряд полезных сведений.
 
@@ -157,6 +169,8 @@ e77764b94408   nginx     "/docker-entrypoint.…"   28 seconds ago   Up 27 secon
 
 ## Запуск первой программы в Docker
 
+[docs: Лучшие практики для написания Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
+
 ```php
 FROM php:8.1-cli
 
@@ -235,10 +249,13 @@ docker run nginx cat /etc/nginx/nginx.conf
 просто точка `.`
 (test_app - <имя вашего пользователя>)
 
-- `-t` задает имя для `images`
+- `-t` — название образа, который будет получен после билда
 - `latest` - по умолчанию
 - `exс` - может быть что угодно
-- `-f` если у Dockerfile другое имя
+- `-f` - название Dockerfile, который будет использоваться для сборки образ
+- `-no-cache` - Не использовать кеш при построении образа (используеться когда нужно перестроить контейнер с помощью той
+  же команды, а он использует кеш прошлой сборки)
+  а
 
 `docker build -t <имя>/<репозиторий/имя_образа>:версия . ( точка важна!)`
 
@@ -298,9 +315,21 @@ VOLUME /my_volume <-- cоздаём том для хранения данных
    что если выполняемая команда запросит пользовательский ввод, например разрешение на установку чего-либо, то мы не
    сможем выбрать ответ yes. Поэтому все команды в RUN запускают в неинтерактивном режиме:
 
+`docker-php-ext-install` - установка модуля.
+
+`docker-php-ext-configure` - конфигурация модуля.
+
+`docker-php-ext-enable` - включение модуля.
+
+`pecl install` - установка модулей с помощью pecl.
+
 ```php
 # -q - ставить автоматически не задавая вопросов
 RUN apt-get install -q curl
+
+RUN apt-get update \
+    && apt-get install -y \
+    libmagickwand-dev \ ...
 ```
 
 6. `WORKDIR` задает рабочий каталог (автоматически создает директорию, если ее еще нет), относительно которого
@@ -374,6 +403,90 @@ ENTRYPOINT ["executable", "param1", "param2"]
 12. `VOLUME` позволяет указать место, которое контейнер будет использовать для постоянного хранения файлов и для работы
     с такими файлами.
 
+## Многоэтапные (multi-stage builds) сборки
+
+```
+FROM golang:latest
+COPY . .
+RUN go test && go build ./src/main.go
+
+$ docker image build -t hello_world:build .
+```
+
+Если посмотреть метаданные образа: docker image inspect hello_world:build то видно, что он состоит из 6 отдельный слоев
+и занимает около 800MB, получили куча артефактов сборки. И это только Hello World, а какой размер может быть у реального
+приложение можно только
+представить.
+
+Так же каждая инструкция в Dockerfile добавляет отдельный слой и необходимо очистить этот слой от всех лишних
+артефактов, перед тем как добавить новый слой.
+
+Практикой является отделение образа для сборки от образа для запуска, но этот подход рутинный поэтому для упрощения
+процесса появился build-stages внутри Dockerfile.
+
+Теперь отдельные Dockerfile'ы для билда перестали быть нужны, так как появилась возможность разделять стадии сборки в
+одном Dockerfile.
+
+```php
+# Стадия сборки "build-env"
+FROM golang:1.8.1-alpine AS build-env
+# Устанавливаем зависимости, необходимые для сборки
+RUN apk add --no-cache \
+    git \
+    make
+ADD . /go/src/github.com/username/project
+WORKDIR /go/src/github.com/username/project
+# Запускаем сборку
+RUN make build
+
+# --------
+
+# Стадия подготовки image к бою
+FROM alpine:3.5
+# Копируем артефакт сборки из стадии "build-env" в указанный файл
+COPY --from=build-env /go/src/github.com/username/project/bin/service /usr/local/bin/service
+EXPOSE 65122
+CMD ["service"]
+```
+
+<details>
+<summary>Mожно использовать несколько стадий сборки, например если вы собираете отдельно бекенд и фронтенд </summary>
+
+```php
+# Стадия сборки "build-env"
+FROM golang:1.8.1-alpine AS build-env
+ADD . /go/src/github.com/username/project
+WORKDIR /go/src/github.com/username/project
+# Запускаем сборку
+RUN make build
+
+# --------
+# Вторая стадия сборки "build-second"
+FROM build-env AS build-second
+RUN touch /newfile
+RUN echo "123" > /newfile
+
+# --------
+# Стадия сборки frontend "build-front"
+FROM node:alpine AS build-front # Каждая инструкция FROM обнуляет все предыдущие команды.
+ENV PROJECT_PATH /app
+ADD . $PROJECT_PATH
+WORKDIR $PROJECT_PATH
+RUN npm run build
+
+# --------
+# Стадия подготовки image к бою
+FROM alpine:3.5  
+# Копируем артефакт сборки из стадии "build-env" в указанный файл
+COPY --from=build-env /go/src/github.com/username/project/bin/service /usr/local/bin/service
+# Копируем артефакт сборки из стадии "build-front" в указанную директорию
+COPY --from=build-front /app/public /app/static
+EXPOSE 65122
+CMD ["service"]
+```
+
+</details>
+
 ## Создания контейнера (docker-compose.yml)
 
 Docker Compose позволяет управлять набором контейнеров, каждый из которых представляет собой один сервис проекта.
@@ -389,6 +502,8 @@ Docker Compose позволяет управлять набором контей
 - `-d` - Запуск контейнеров на фоне с флагом -d
 - `--build` если изменили какие то приложения
 - `--abort-on-container-exit` - Если какой-то из сервисов завершит работу, то остальные будут остановлены автоматически
+- `--force-recreate` перечитывает конфигурацию docker-compose.yml и поднимает контейнер с учетом новых параметров в
+  docker-compose.yml
 
 `docker-compose run application make install` - Запустит сервис application и выполнит внутри команду `make install`
 
@@ -791,6 +906,129 @@ networks:
     
 $ docker-compose -f ./cli-compose.yml build
 $ docker-compose -f ./cli-compose.yml run php-cli bash
+```
+
+</details>
+
+<details>
+<summary>build-stages для php:8.1.5-fpm</summary>
+
+```php
+
+#FROM php:8.1.5-fpm
+#
+#WORKDIR /var/www
+#
+#RUN apt-get update \
+#    && apt-get install -y \
+#    libmagickwand-dev \
+#    libmagickcore-dev \
+#    libzip-dev \
+#    libwebp-dev
+#
+#RUN docker-php-ext-install exif \
+# && pecl install imagick \
+# && docker-php-ext-enable imagick \
+# && PHP_OPENSSL=yes \
+# && docker-php-ext-install xml \
+# && docker-php-ext-install filter \
+# && docker-php-ext-install zip \
+# && docker-php-ext-install bcmath \
+# && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+# && docker-php-ext-install gd \
+# && docker-php-ext-install intl
+#
+#CMD ["php-fpm"]
+
+FROM php:8.1.5-fpm AS builder
+
+ENV PHP_OPENSSL=yes
+
+RUN apt-get update \
+    && apt-get install -y \
+    libmagickwand-dev \
+    libmagickcore-dev \
+    libzip-dev \
+    libwebp-dev
+
+RUN pecl install imagick \
+    && docker-php-ext-install bcmath \
+    	exif \
+    	filter \
+    	intl \
+    	xml \
+    	zip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install gd
+
+
+FROM php:8.1.5-fpm
+
+WORKDIR /var/www
+
+COPY --from=builder /usr/local/lib/php/extensions/no-debug-non-zts-20210902/ \
+    /usr/local/lib/php/extensions/no-debug-non-zts-20210902/
+
+RUN apt-get update \
+    && apt install -y libmagickcore-6.q16-6 libmagickwand-6.q16-6 libzip4 \
+    && docker-php-ext-enable bcmath \
+    	exif \
+    	gd \
+    	imagick \
+    	intl \
+    	zip \
+    && rm -rf /var/lib/apt/lists/*
+
+CMD ["php-fpm"]
+```
+
+</details>
+
+<details>
+<summary>build-stages для php:8.1.5-fpm и 8.2-fpm</summary>
+
+```php
+FROM php:8.1-fpm
+
+# Set Environment Variables
+ENV DEBIAN_FRONTEND noninteractive
+#
+# Installing tools and PHP extentions using "apt", "docker-php", "pecl",
+#
+# Install "curl", "libmemcached-dev", "libpq-dev", "libjpeg-dev",
+#         "libpng-dev", "libfreetype6-dev", "libssl-dev", "libmcrypt-dev",
+RUN set -eux; \
+    apt-get update; \
+    apt-get upgrade -y; \
+    apt-get install -y --no-install-recommends \
+            curl \
+            libmemcached-dev \
+            libz-dev \
+            libpq-dev \
+            libjpeg-dev \
+            libpng-dev \
+            libfreetype6-dev \
+            libssl-dev \
+            libwebp-dev \
+            libxpm-dev \
+            libmcrypt-dev \
+            libonig-dev; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+    # Install the PHP pdo_mysql extention
+    docker-php-ext-install pdo_mysql; \
+    # Install the PHP pdo_pgsql extention
+    docker-php-ext-install pdo_pgsql; \
+    # Install the PHP gd library
+    docker-php-ext-configure gd \
+            --prefix=/usr \
+            --with-jpeg \
+            --with-webp \
+            --with-xpm \
+            --with-freetype; \
+    docker-php-ext-install gd; \
+    php -r 'var_dump(gd_info());'
 ```
 
 </details>
