@@ -333,7 +333,9 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 - [ ] Написать основные категории
 
 ```
-**Warning** и **Note**
+> **Warning**: This is a waring
+
+> **Note** : This is a note
 ```
 > **Warning**: This is a waring
 

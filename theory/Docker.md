@@ -23,16 +23,17 @@
 
 ## Содержание
 
-1. [Образ]()
-2. [Контейнер]()
-3. [Запуск первой программы в Docker]()
-4. [Подготовка собственного образа (Dockerfile)]()
-5. [Структура Dockerfile]()
-6. [Создания контейнера (docker-compose.yml)]()
-7. [Тома Docker]()
-8. [Сети]()
-9. [.dockerignore]()
-10. [Примеры проектов]()
+1. [Образ](#образ)
+2. [Контейнер](#контейнер)
+3. [Запуск первой программы в Docker](#запуск-первой-программы-в-docker)
+4. [Подготовка собственного образа (Dockerfile)](#подготовка-собственного-образа-dockerfile)
+5. [Структура Dockerfile](#структура-dockerfile)
+6. [Многоэтапные (multi-stage builds) сборки](#многоэтапные-multi-stage-builds-сборки)
+6. [Создания контейнера (docker-compose.yml)](#создания-контейнера-docker-composeyml)
+7. [Тома Docker](#тома-docker)
+8. [Сети](#сети)
+9. [.dockerignore](#dockerignore)
+10. [Примеры проектов](#примеры-проектов)
 
 ---
 
@@ -544,6 +545,8 @@ CMD ["service"]
 
 `docker-compose logs -f service_name` - журналы сервисов
 
+`docker-compose -f docker-compose.yml config` `ocker-compose config` - проверяет синтаксис файла 
+
 ```yml
 #Версия схемы, которую мы используем.
 # Зависит от установленной версии docker
@@ -740,6 +743,17 @@ Docker Compose yaml или Docker Dockerfile).
   выглядели как физическое устройство, например, при переносе настройки виртуальной машины.
 
 `docker network ls` - проверить все сети
+
+```
+NETWORK ID     NAME      DRIVER    SCOPE
+d4e8bf6f8416   bridge    bridge    local
+29cc202816aa   host      host      local
+53ad37e1e626   none      null      local
+```
+`NETWORK ID` — При создании сети, ей присваивается ID. Так это собственно индификатор сети.
+`NAME` — Имя сети. Можно задать произвольное имя.
+`DRIVER` — Используемый драйвер для созданной сети.
+`SCOPE` — Где используется.
 
 `docker network inspect itisgood_network` - получить все подробности о типе сети
 
