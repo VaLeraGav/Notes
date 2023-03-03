@@ -421,7 +421,8 @@ table-templates:
 
 ## Формулы
 
-Для визуализации формул GitHub использует популярную библиотеку MathJax. Для визуализации формул пользователю следует использовать ключевые символы в виде `$` или `$$`.  Формулы следует записывать в формате TeX или LaTeX.
+Для визуализации формул GitHub использует популярную библиотеку MathJax. Для визуализации формул пользователю следует использовать ключевые символы в виде `$` или `$$`.  Формулы следует записывать в формате TeX или [LaTeX](https://ru.wikibooks.org/wiki/%D0%9C%D0%B0%D1%82%D0%B5%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5_%D1%84%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D1%8B_%D0%B2_LaTeX).
+
 
 ```
 Когда $D > 0$, уравнение $(ax^2 + bx + c = 0)$ имеет два корня, которые можно найти следующим образом:
@@ -429,9 +430,7 @@ $$ x_{1}, x_{2} = {-b \pm \sqrt{D} \over 2a} $$
 $$ D = b^2 - 4ac$$
 ```
 
-Когда $D > 0$, уравнение $(ax^2 + bx + c = 0)$ имеет два корня, которые можно найти следующим образом:
-$$ x_{1}, x_{2} = {-b \pm \sqrt{D} \over 2a} $$
-$$ D = b^2 - 4ac$$
+\forall x \in X, \quad \exists y \leq \epsilon
 
 ```
 **The Cauchy-Schwarz Inequality**
@@ -443,14 +442,10 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
 
 ```
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
-
-![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?x%3D%5Cfrac%7B-b%5Cpm%5Csqrt%7Bb%5E2-4ac%7D%7D%7B2a%7D)
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a})
 ```
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
-
-![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?x%3D%5Cfrac%7B-b%5Cpm%5Csqrt%7Bb%5E2-4ac%7D%7D%7B2a%7D)
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a})
 
