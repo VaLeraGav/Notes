@@ -4,19 +4,17 @@ table-templates:
 card:
 orientation: horizontal
 series:
-
 - title: Name
-  id: name
+id: name
 - title: Age
-  id: age
+id: age
 - title: Company
-  id: company
+id: company
 - title: Position
-  id: position
-  classes:
+id: position
+classes:
 - card
 - horizontal
-
 ---
 
 Такая таблица с использованием .yml формата может находиться только в начале файла, cинтаксис будет в разделе таблицы.
@@ -421,16 +419,16 @@ table-templates:
 
 ## Формулы
 
-Для визуализации формул GitHub использует популярную библиотеку MathJax. Для визуализации формул пользователю следует использовать ключевые символы в виде `$` или `$$`.  Формулы следует записывать в формате TeX или [LaTeX](https://ru.wikibooks.org/wiki/%D0%9C%D0%B0%D1%82%D0%B5%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5_%D1%84%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D1%8B_%D0%B2_LaTeX).
-
+Для визуализации формул GitHub использует популярную библиотеку MathJax. Для визуализации формул пользователю следует
+использовать ключевые символы в виде `$` или `$$`. Формулы следует записывать в формате TeX
+или [LaTeX](https://ru.wikibooks.org/wiki/%D0%9C%D0%B0%D1%82%D0%B5%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5_%D1%84%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D1%8B_%D0%B2_LaTeX)
+.
 
 ```
-Когда $D > 0$, уравнение $(ax^2 + bx + c = 0)$ имеет два корня, которые можно найти следующим образом:
-$$ x_{1}, x_{2} = {-b \pm \sqrt{D} \over 2a} $$
-$$ D = b^2 - 4ac$$
+$$\frac{n!}{k!(n-k)!} = \binom{n}{k}$$
 ```
 
-\forall x \in X, \quad \exists y \leq \epsilon
+$$\frac{n!}{k!(n-k)!} = \binom{n}{k}$$
 
 ```
 **The Cauchy-Schwarz Inequality**
@@ -445,17 +443,39 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a})
 ```
+
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a})
-
-
 
 ## Диаграммы
 
-Рисуем диаграммы : https://habr.com/ru/post/652867/
+<details>
+<summary>Рисуем диаграммы : (https://habr.com/ru/post/652867/)</summary>
 
-```markdown
+- fill — заливка;
+- stroke — цвет границы;
+- stroke-width — толщина границы;
+- color — цвет текста;
+- stroke-dasharray — пунктирная граница.
+
+```
+flowchart LR
+  classDef class1 fill:#3f3,stroke:#333,stroke-width:4px
+  classDef class2 fill:#ff2400,stroke:#333,stroke-width:4px,color:#fff,stroke-dasharray: 12 5
+
+  A:::class1 --> B:::class2
+```
+
+```mermaid
+flowchart LR
+  classDef class1 fill:#3f3,stroke:#333,stroke-width:4px
+  classDef class2 fill:#ff2400,stroke:#333,stroke-width:4px,color:#fff,stroke-dasharray: 12 5
+
+  A:::class1 --> B:::class2
+```
+
+```
     ```mermaid
       graph TD;
           A-->B;
@@ -473,7 +493,89 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
       C-->D;
 ```
 
-```markdown
+```
+  flowchart TB
+    node1[Форма 1]  
+    node2(Форма 2)
+    node3([Форма 3])
+    node4[[Форма 4]]
+    node5[(Форма 5)]
+    node6((Форма 6))
+    node7>Форма 7]
+    node8{Форма 8}
+    node9{{Форма 9}}
+    node10[/Форма 10/]
+    node11[\Форма 11\]
+    node12[/Форма 12\]
+    node13[\Форма 13/]
+```
+
+```mermaid
+flowchart TB
+  node1[Форма 1]  
+  node2(Форма 2)
+  node3([Форма 3])
+  node4[[Форма 4]]
+  node5[(Форма 5)]
+  node6((Форма 6))
+  node7>Форма 7]
+  node8{Форма 8}
+  node9{{Форма 9}}
+  node10[/Форма 10/]
+  node11[\Форма 11\]
+  node12[/Форма 12\]
+  node13[\Форма 13/]
+```
+
+```
+flowchart TD
+  A-- Text ---B
+  C---|Text|D
+  E-->|text|F
+  G-- text -->H
+  I-. text .-> J
+  K == text ==> L
+```
+
+```mermaid
+flowchart TD
+  A-- Text ---B
+  C---|Text|D
+  E-->|text|F
+  G-- text -->H
+  I-. text .-> J
+  K == text ==> L
+```
+
+```
+flowchart TB
+    c1-->a2
+    subgraph one
+    a1-->a2
+    end
+    subgraph two
+    b1-->b2
+    end
+    subgraph three
+    c1-->c2
+    end
+```
+
+```mermaid
+flowchart TB
+    c1-->a2
+    subgraph one
+    a1-->a2
+    end
+    subgraph two
+    b1-->b2
+    end
+    subgraph three
+    c1-->c2
+    end
+```
+
+```
     ```mermaid
     sequenceDiagram
         participant dotcom
@@ -486,6 +588,7 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
         dotcom->>iframe: set mermaid data on iframe
         iframe->>iframe: render mermaid
     ```
+
 ```
 
 ```mermaid
@@ -500,6 +603,8 @@ sequenceDiagram
     dotcom->>iframe: set mermaid data on iframe
     iframe->>iframe: render mermaid
 ```
+
+</details>
 
 Как пример изобразить диаграмму c помощью кода ASCII.
 
