@@ -1,3 +1,25 @@
+---
+title: "Язык разметки Markdown"
+description: "Зачем нужен ещё один язык разметки и как на нём писать."
+authors:
+- cergmin
+  editors:
+- tachisis
+  contributors:
+- skirienko
+- skorobaeus
+  keywords:
+- документация
+- разметка
+- readme
+  related:
+- tools/package-managers
+- tools/version-control
+- tools/github-actions
+  tags:
+- article
+---
+
 # Markdown
 
 ---
@@ -206,7 +228,7 @@
         - Уровень списка 3. 
 ```
 
-Резульат:
+Результат:
 
 ---
 
@@ -244,6 +266,8 @@ print_r("test");
 
 ```markdown
 ---
+
+***
 ```
 
 ## Вставка изображения
@@ -328,28 +352,6 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 Если в тексте таблицы нужно использовать символ "вертикальная черта - `|`", то в место него необходимо написать замену
 на комбинацию HTML-кода* `&#124;`, это нужно для того, что бы таблица не потеряла ориентации.
 
----
-title: "Язык разметки Markdown"
-description: "Зачем нужен ещё один язык разметки и как на нём писать."
-authors:
-- cergmin
-  editors:
-- tachisis
-  contributors:
-- skirienko
-- skorobaeus
-  keywords:
-- документация
-- разметка
-- readme
-  related:
-- tools/package-managers
-- tools/version-control
-- tools/github-actions
-  tags:
-- article
----
-
 ## Emoji
 
 ```markdown
@@ -431,12 +433,6 @@ This allows you to have a footnote with multiple lines.
 [^note]:
 Named footnotes will still render with numbers instead of the text but allow 
 ```
-
-Проверка
-
-В конце пятого эпизода выясняется, что
-> ! он его отец.
-
 
 [⏏ К содержанию](#содержание)
 
