@@ -31,6 +31,13 @@
 
 Не забываете в нем можно использовать HTML теги.
 
+У Markdown есть [оригинальная спецификация](https://daringfireball.net/projects/markdown/basics) от одного из создателей
+языка — Джона Грубера. К сожалению, она не всегда однозначно описывает синтаксис, из-за чего многие конвертеры Markdown
+работают по-разному. Чтобы исправить эту ситуацию, группа разработчиков «поклонников Markdown» создала CommonMark —
+спецификацию, которая описывает многие частные случаи, и эталонную реализацию парсера Markdown на JS.
+
+Для вставки символов внутрь тегов воспользуетесь [HTML-кодом символов](https://symbl.cc/ru/html-entities/) - мнемоники
+
 ## Параграфы и разрывы строк
 
 Для того чтобы вставить видимый перенос строки (элемент `<br/>`) необходимо окончить строку двумя пробелами и нажатием
@@ -239,17 +246,22 @@ print_r("test");
 ---
 ```
 
-## Вставка изображения или ссылки
+## Вставка изображения
 
 ```markdown
-[пример](http://example.com/ "Необязательная подсказка")
-! [фото](/путь/к/изображению.jpg "Необязательная подсказка")
+![alt-текст](/путь/к/изображению.jpg "Необязательная подсказка")
+[![alt-текст](адрес до картинку)](ссылка на страничку)
+
+[PlDb]: <http://путь/к/изображению.jpg>
 
 [id]: ../assets/pattern1.png  <-- использовать как переменную
-[PlDb]: <http://путь/к/изображению.jpg>
+....текст....
 ![Альтернативный текст][id]  <-- а тут она вызывается
 
-[![Тут текст](адрес до картинку)](ссылка на страничку) 
+В сноске:  
+![alt-текст][logo]
+
+[logo]: https://.... "Текст заголовка"
 ```
 
 ```html
@@ -266,6 +278,25 @@ print_r("test");
 </p>
 ```
 
+## Ссылки
+
+```markdown
+[ссылка с title](http://example.com/ "Необязательная подсказка")
+
+[Введение](#введение)
+
+[Pattern](/theory/Pattern.md) <-- относительная ссылка (можно ходить по репозиторию)
+
+[Pattern](/../theory/Pattern.md)
+
+[Ссылка со сноской][id]
+[id]: https://www.mozilla.org
+
+Можно вставить ссылку в конце файла [текст ссылки]
+....текст....
+[текст ссылки]: http://www.yandex.ru
+```
+
 ## Бейджики
 
 ```markdown
@@ -275,15 +306,6 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.io/badge/Python-3.7.5-blue)
 
 Сложно вставлять свои или готовые бейджик. Источник:  https://shields.io/category/build
-
-## Ссылки
-
-```markdown
-[Введение](#введение)
-[Pattern](/theory/Pattern.md) <-- можно ходить по репозиторию
-[Pattern](/../theory/Pattern.md)
-
-```
 
 ## Таблица
 
@@ -305,6 +327,28 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 Внимание:
 Если в тексте таблицы нужно использовать символ "вертикальная черта - `|`", то в место него необходимо написать замену
 на комбинацию HTML-кода* `&#124;`, это нужно для того, что бы таблица не потеряла ориентации.
+
+---
+title: "Язык разметки Markdown"
+description: "Зачем нужен ещё один язык разметки и как на нём писать."
+authors:
+- cergmin
+  editors:
+- tachisis
+  contributors:
+- skirienko
+- skorobaeus
+  keywords:
+- документация
+- разметка
+- readme
+  related:
+- tools/package-managers
+- tools/version-control
+- tools/github-actions
+  tags:
+- article
+---
 
 ## Emoji
 
@@ -337,6 +381,7 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 
 > **Note** : This is a note
 ```
+
 > **Warning**: This is a waring
 
 > **Note** : This is a note
@@ -387,6 +432,12 @@ This allows you to have a footnote with multiple lines.
 Named footnotes will still render with numbers instead of the text but allow 
 ```
 
+Проверка
+
+В конце пятого эпизода выясняется, что
+> ! он его отец.
+
+
 [⏏ К содержанию](#содержание)
 
 Результат:
@@ -403,10 +454,4 @@ You can also use words, to fit your writing style more closely[^note].
 This allows you to have a footnote with multiple lines.
 [^note]:
 ---
-
-
-
-
-
-
 

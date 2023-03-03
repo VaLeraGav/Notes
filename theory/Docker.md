@@ -522,10 +522,11 @@ CMD ["service"]
 `docker-compose up` - Запускает собранные сервисы (скачивает)
 
 - `-d` - Запуск контейнеров на фоне с флагом -d
-- `--build` если изменили какие то приложения
+- `--build` - если изменили какие то приложения
 - `--abort-on-container-exit` - Если какой-то из сервисов завершит работу, то остальные будут остановлены автоматически
-- `--force-recreate` перечитывает конфигурацию docker-compose.yml и поднимает контейнер с учетом новых параметров в
+- `--force-recreate` - перечитывает конфигурацию docker-compose.yml и поднимает контейнер с учетом новых параметров в
   docker-compose.yml
+- `--no-deps` - Не запускайте связанные службы.
 
 `docker-compose run application make install` - Запустит сервис application и выполнит внутри команду `make install`
 
@@ -1099,5 +1100,119 @@ RUN set -eux; \
 ```
 
 </details>
+
+<details>
+<summary>docker-compose.yml для wordpress</summary>
+
+https://github.com/pavlenko-at/worlditech
+
+```yml
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql8
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - dbfile:/var/lib/mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+    networks:
+      - app
+
+  wp:
+    image: wordpress:5.7.0-php8.0-fpm
+    container_name: wordpress-5.7.0-php8.0-fpm
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - WORDPRESS_DB_HOST=mysql:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=$MYSQL_DATABASE
+    volumes:
+      - www-html:/var/www/html
+    networks:
+      - app
+
+  nginx:
+    image: nginx:1.19.8-alpine
+    depends_on:
+      - wp
+    container_name: nginx-1.19.8-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - www-html:/var/www/html
+      - ./nginx-conf.d:/etc/nginx/conf.d
+    networks:
+      - app
+
+volumes:
+  www-html:
+  dbfile:
+
+networks:
+  app:
+    driver: bridge
+```
+
+```php
+server {
+        listen 80;
+        listen [::]:80;
+
+        server_name  north.world-ithech.ru;
+
+        index index.php index.html index.htm;
+
+        root /var/www/html;
+
+        location / {
+                try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+        location ~ \.php$ {
+                try_files $uri =404;
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_pass wp:9000;
+                fastcgi_index index.php;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                fastcgi_param PATH_INFO $fastcgi_path_info;
+        }
+
+        location ~ /\.ht {
+                deny all;
+        }
+
+        location = /favicon.ico {
+                log_not_found off;
+        }
+        location = /robots.txt {
+                log_not_found off;
+        }
+        location ~* \.(css|gif|ico|jpeg|jpg|js|png)$ {
+                expires max;
+                log_not_found off;
+        }
+}
+```
+```dotenv
+MYSQL_ROOT_PASSWORD=765843
+MYSQL_USER=wp_db_user
+MYSQL_PASSWORD=1234
+MYSQL_DATABASE=wp_db
+```
+
+</details>
+
+[Установка и настройка Laravel с помощью Docker Compose ](https://www.digitalocean.com/community/tutorials/how-to-install-and-set-up-laravel-with-docker-compose-on-ubuntu-20-04-ru)
+
+[Docker для локальной php разработки](https://verstaem.com/devops/docker-php-development/)
 
 [⏏ К содержанию](#содержание)
