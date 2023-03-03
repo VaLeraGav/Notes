@@ -19,6 +19,10 @@
 
 [Теория](https://github.com/codedokode/pasta)
 
+https://github.com/doka-guide/content
+
+генератор документации mcdocs
+
 - PHP-function
 - Батник
 

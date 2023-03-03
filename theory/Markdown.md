@@ -1,23 +1,25 @@
 ---
 title: Table Filter Example
 table-templates:
-    card:
-    orientation: horizontal
-    series:
-    - title: Name
-      id: name
-    - title: Age
-      id: age
-    - title: Company
-      id: company
-    - title: Position
-      id: position
-    classes:
-    - card
-    - horizontal
+card:
+orientation: horizontal
+series:
+
+- title: Name
+  id: name
+- title: Age
+  id: age
+- title: Company
+  id: company
+- title: Position
+  id: position
+  classes:
+- card
+- horizontal
+
 ---
 
-Такая таблица с использованием .yml формата может находиться только в начале файла, cинтаксис будет в разделе таблицы.
+Такая таблица с использованием .yml формата может находиться только в начале файла, cинтаксис будет в разделе таблицы. Используется в генераторах документации, такие как Hugo.
 
 # Markdown
 
@@ -39,9 +41,10 @@ table-templates:
 12. [Бейджики](#бейджики)
 13. [Ссылки](#ссылки)
 14. [Таблица](#таблица)
-15. [Emoji](#emoji)
-16. [Дополнительные элементы](#дополнительные-элементы)
-17. [Сноски](#сноски)
+15. [Диаграммы](#диаграммы)
+16. [Emoji](#emoji)
+17. [Дополнительные элементы](#дополнительные-элементы)
+18. [Сноски](#сноски)
 
 ---
 
@@ -324,7 +327,6 @@ print_r("test");
 
 [⏏ К содержанию](#содержание)
 
-
 ## Бейджики
 
 ```markdown
@@ -387,7 +389,7 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 </table>
 
 
-Ситаксис той таблицы что в начале файла
+Синтаксис той таблицы, что в начале файла
 
 ```
 ---
@@ -409,6 +411,70 @@ table-templates:
     - horizontal
 ---
 ```
+
+## Диаграммы
+
+Рисуем диаграммы : https://habr.com/ru/post/652867/
+
+```markdown
+    ```mermaid
+      graph TD;
+          A-->B;
+          A-->C;
+          B-->D;
+          C-->D;
+    ```
+```
+
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
+
+```markdown
+    ```mermaid
+    sequenceDiagram
+        participant dotcom
+        participant iframe
+        participant viewscreen
+        dotcom->>iframe: loads html w/ iframe url
+        iframe->>viewscreen: request template
+        viewscreen->>iframe: html & javascript
+        iframe->>dotcom: iframe ready
+        dotcom->>iframe: set mermaid data on iframe
+        iframe->>iframe: render mermaid
+    ```
+```
+
+```mermaid
+sequenceDiagram
+    participant dotcom
+    participant iframe
+    participant viewscreen
+    dotcom->>iframe: loads html w/ iframe url
+    iframe->>viewscreen: request template
+    viewscreen->>iframe: html & javascript
+    iframe->>dotcom: iframe ready
+    dotcom->>iframe: set mermaid data on iframe
+    iframe->>iframe: render mermaid
+```
+
+Как пример изобразить диаграмму
+
+```
+  +--------+   +-------+    +-------+
+  |        | --+ ditaa +--> |       |
+  |  Text  |   +-------+    |diagram|
+  |Document|   |!magic!|    |       |
+  |     {d}|   |       |    |       |
+  +---+----+   +-------+    +-------+
+      :                         ^
+      |       Lots of work      |
+      +-------------------------+
+  ```
 
 ## Emoji
 
@@ -471,8 +537,6 @@ table-templates:
 <pre>
     <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Esc</kbd> - Вызов диспетчера задач.
 </pre>
-
-Рисуем диаграммы : https://habr.com/ru/post/652867/
 
 ## Сноски
 
