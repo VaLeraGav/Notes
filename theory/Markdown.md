@@ -17,6 +17,8 @@ table-templates:
     - horizontal
 ---
 
+Такая таблица с использованием .yml формата может находиться только в начале файла, cинтаксис будет в разделе таблицы.
+
 # Markdown
 
 ---
@@ -316,7 +318,12 @@ print_r("test");
 Можно вставить ссылку в конце файла [текст ссылки]
 ....текст....
 [текст ссылки]: http://www.yandex.ru
+
+[⏏ К содержанию](#содержание)
 ```
+
+[⏏ К содержанию](#содержание)
+
 
 ## Бейджики
 
@@ -348,6 +355,60 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 Внимание:
 Если в тексте таблицы нужно использовать символ "вертикальная черта - `|`", то в место него необходимо написать замену
 на комбинацию HTML-кода* `&#124;`, это нужно для того, что бы таблица не потеряла ориентации.
+
+```html 
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">The table header</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>The table body</td>
+            <td>with two columns</td>
+        </tr>
+    </tbody>
+</table>
+```
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">The table header</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>The table body</td>
+            <td>with two columns</td>
+        </tr>
+    </tbody>
+</table>
+
+
+Ситаксис той таблицы что в начале файла
+
+```
+---
+title: Table Filter Example
+table-templates:
+    card:
+    orientation: horizontal
+    series:
+    - title: Name
+      id: name
+    - title: Age
+      id: age
+    - title: Company
+      id: company
+    - title: Position
+      id: position
+    classes:
+    - card
+    - horizontal
+---
+```
 
 ## Emoji
 
