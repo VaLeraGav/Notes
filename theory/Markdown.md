@@ -2,22 +2,22 @@
 title: "Язык разметки Markdown"
 description: "Зачем нужен ещё один язык разметки и как на нём писать."
 authors:
-- cergmin
-  editors:
-- tachisis
-  contributors:
-- skirienko
-- skorobaeus
-  keywords:
-- документация
-- разметка
-- readme
-  related:
-- tools/package-managers
-- tools/version-control
-- tools/github-actions
-  tags:
-- article
+  - cergmin
+    editors:
+  - tachisis
+    contributors:
+  - skirienko
+  - skorobaeus
+    keywords:
+  - документация
+  - разметка
+  - readme
+    related:
+  - tools/package-managers
+  - tools/version-control
+  - tools/github-actions
+    tags:
+  - article
 ---
 
 # Markdown
