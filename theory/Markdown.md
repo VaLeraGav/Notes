@@ -1,23 +1,20 @@
 ---
-title: "Язык разметки Markdown"
-description: "Зачем нужен ещё один язык разметки и как на нём писать."
-authors:
-  - cergmin
-    editors:
-  - tachisis
-    contributors:
-  - skirienko
-  - skorobaeus
-    keywords:
-  - документация
-  - разметка
-  - readme
-    related:
-  - tools/package-managers
-  - tools/version-control
-  - tools/github-actions
-    tags:
-  - article
+title: Table Filter Example
+table-templates:
+    card:
+    orientation: horizontal
+    series:
+    - title: Name
+      id: name
+    - title: Age
+      id: age
+    - title: Company
+      id: company
+    - title: Position
+      id: position
+    classes:
+    - card
+    - horizontal
 ---
 
 # Markdown
