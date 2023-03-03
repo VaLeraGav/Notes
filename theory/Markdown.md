@@ -1,25 +1,3 @@
----
-title: "Язык разметки Markdown"
-description: "Зачем нужен ещё один язык разметки и как на нём писать."
-authors:
-- cergmin
-  editors:
-- tachisis
-  contributors:
-- skirienko
-- skorobaeus
-  keywords:
-- документация
-- разметка
-- readme
-  related:
-- tools/package-managers
-- tools/version-control
-- tools/github-actions
-  tags:
-- article
----
-
 # Markdown
 
 ---
@@ -343,14 +321,39 @@ Language: ![https://img.shields.io/badge/Python-3.7.5-blue](https://img.shields.
 
 Результат:
 
-| LEFT |         CENTER          | RIGHT |
-|----------------|:-----------------------:|----------------:|
-| По левому краю | По центру лишний текст  | По правому краю |
-| текст |          текст          | текст |
+| LEFT           |         CENTER         |           RIGHT |
+|----------------|:----------------------:|----------------:|
+| По левому краю | По центру лишний текст | По правому краю |
+| текст          |         текст          |           текст |
 
 Внимание:
 Если в тексте таблицы нужно использовать символ "вертикальная черта - `|`", то в место него необходимо написать замену
 на комбинацию HTML-кода* `&#124;`, это нужно для того, что бы таблица не потеряла ориентации.
+
+```
+- name: journal_pivot_dev
+    description: One for for each journal entry of within one customer cycle
+    columns:
+      - name: cycle_id
+        description: '{{ doc(column_description") }}'
+        tests: &not_null
+          - not_null:
+              severity: warn
+      - name: user_id
+        description: '{{ doc(column_description") }}'
+        tests:
+          - not_null:
+              severity: warn
+      - name: yes_alcohol
+        description: '{{ doc(column_description") }}'
+        tests: &values_accepted
+          - accepted_values:
+              severity: warn
+              values: [ 0,1 ]
+      - name: blank_alcohol
+        description: '{{ doc(column_description") }}'
+        tests: *values_accepted 
+```
 
 ## Emoji
 
