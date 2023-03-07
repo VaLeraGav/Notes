@@ -788,7 +788,8 @@ node_modules/
 
 Файловая система:
 
-```dockerfile nginx
+```dockerfile 
+|- nginx
 |   |- nginx.conf
 |- public
 |   |- index.php
@@ -848,7 +849,8 @@ services:
 
 </details>
 
-```dockerfile- nginx
+```dockerfile
+- nginx
 |   |- nginx.conf
 |- public
 |   |- index.php
