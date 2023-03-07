@@ -29,13 +29,15 @@
 4. [Подготовка собственного образа (Dockerfile)](#подготовка-собственного-образа-dockerfile)
 5. [Структура Dockerfile](#структура-dockerfile)
 6. [Многоэтапные (multi-stage builds) сборки](#многоэтапные-multi-stage-builds-сборки)
-6. [Создания контейнера (docker-compose.yml)](#создания-контейнера-docker-composeyml)
-7. [Тома Docker](#тома-docker)
-8. [Сети](#сети)
-9. [.dockerignore](#dockerignore)
-10. [Примеры проектов](#примеры-проектов)
+7. [Создания контейнера (docker-compose.yml)](#создания-контейнера-docker-composeyml)
+8. [Тома Docker](#тома-docker)
+9. [Сети](#сети)
+10. [.dockerignore](#dockerignore)
+11. [Примеры проектов](#примеры-проектов)
 
 ---
+
+### Ссылки
 
 [Настройка LEMP сервера с помощью docker для простых проектов. Часть первая: База](https://habr.com/ru/company/nixys/blog/661443/)
 

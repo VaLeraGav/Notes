@@ -10,6 +10,7 @@
 - [OOP](/theory/OOP.md)
 - [Markdown](/theory/Markdown.md)
 - [Алгоритмы](/theory/Algorithms/README.md)
+- [Nginx](theory/Nginx.md)
 
 Нужно перекинуть
 
@@ -19,7 +20,7 @@
 
 [Теория](https://github.com/codedokode/pasta)
 
-https://github.com/doka-guide/content
+[Тоже почитать](https://github.com/doka-guide/content)
 
 генератор документации mcdocs
 

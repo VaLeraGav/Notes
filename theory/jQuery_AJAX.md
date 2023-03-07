@@ -1,3 +1,5 @@
+> Недоделан
+
 # jQuery and AJAX
 
 [документация API jQuery](https://jquery-docs.ru/)
