@@ -29,6 +29,8 @@
 `./vendor/bin/phpunit --configuration phpunit.xml --coverage-html coverage` - Tests coverage, создание
 build/coverage.html
 
+`./vendor/bin/phpunit --filter {TestMethodName} {FilePath}` - запустить один или определенные модульные тесты (phpunit --filter '/testSave$/' - те которые начинаються с testSave)
+
 `composer exec --verbose phpunit tests -- --coverage-html coverage` создаст html файл
 
 `composer exec --verbose phpunit tests -- --coverage-text` тоже самое но в текстовом режиме
@@ -40,7 +42,7 @@ build/coverage.html
 
 ```php
 install:
-	composer install
+    composer install
 	
 lint:
     composer run-script phpcs -- --standard=PSR12 src tests
@@ -119,7 +121,7 @@ test:
     "name": "name/name-tasks",
     "description": "Learnin PHP ",
     "bin": [
-        "bin/brain-games", # <-- в папке bin ( #!/usr/bin/env php )
+        "bin/brain-games", # <-- в папке bin, чтобы запускать скрипты 
     ]
     "type": "project",
 		"config": {
@@ -169,17 +171,25 @@ test:
 ```html
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="/composer/vendor/autoload.php"
+         
+<!-- Этот атрибут настраивает эту операцию для всех тестов -->
          backupGlobals="false"
          backupStaticAttributes="false"
-         colors="true"
-         verbose="true"
+
+         colors="true" <!-- используются ли цвета в выводе -->
+
+<!-- будут ли события E_ERROR, E_USER_ERROR, E_STRICT, E_NOTICE, E_WARNING --> <!-- E_USER_WARNING преобразовываться в исключение (и помечать тест как ошибку) -->
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
+
+<!-- определяет, должен ли каждый тест выполняться в отдельном процессе PHP для повышения изоляции --> 
          processIsolation="false"
-         stopOnFailure="true">
-    <testsuites>
-        <testsuite name="tasks">
+<!-- должно ли выполнение набора тестов быть остановлено после завершения первого теста со статусом --> 
+        stopOnFailure="true">
+
+    <testsuites> <!-- использовать для составления набора тестов -->
+        <testsuite name="tasks"> <!-- дочерний элемент -->
             <directory>tests</directory>
             // или
             <file> tests/MoneyTest.php</file>
@@ -187,7 +197,23 @@ test:
         </testsuite>
     </testsuites>
 
-    // laravel
+<!-- Установка INI-настроек, констант и глобальных переменных PHP -->
+    <php>
+        <includePath>.</includePath>
+        <ini name="foo" value="bar"/>
+        <const name="foo" value="bar"/>
+        <var name="foo" value="bar"/>
+<!--        ini_set('foo', 'bar');      -->
+<!--        define('foo', 'bar');       -->
+<!--        $GLOBALS['foo'] = 'bar';    -->
+    </php>
+
+<!-- можете увидеть, почему PHPUnit не работает -->
+    <php>
+        <ini name="display_errors" value="true"/>
+    </php>
+
+    //---------------laravel---------------
     <testsuites>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
